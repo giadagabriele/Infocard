@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "125874608478",
+    "firebase_url": "https://contatti-11671.firebaseio.com",
+    "project_id": "contatti-11671",
+    "storage_bucket": "contatti-11671.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125874608478:android:0f717cf613cf6f2dac57cf",
+        "android_client_info": {
+          "package_name": "com.example.contatti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "125874608478-e5f3i6uuhql1o898bhlucdgfu63jhuk2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmybQrbdlHS3NdMTQMD2a8BeJS0haDfU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "125874608478-e5f3i6uuhql1o898bhlucdgfu63jhuk2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
