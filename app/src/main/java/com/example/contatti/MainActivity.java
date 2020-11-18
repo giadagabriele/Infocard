@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
             startActivity(new Intent(getApplicationContext(), Login.class));
             finish();
         }
+
         else {
             setContentView(R.layout.activity_main);
             final Button logout=findViewById(R.id.esci);
