@@ -3,12 +3,12 @@
     <string name="title_activity_login">Login</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_register">Register</string>
-    <string name="action_sign_in">Sign in</string>
+    <string name="action_registrati">Registrati</string>
+    <string name="action_accedi">Accedi</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="log_out">logout</string>
+    <string name="esci">Esci</string>
     <string name="todo">TODO</string>
 </resources>
