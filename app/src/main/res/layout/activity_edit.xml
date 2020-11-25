@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="119dp"
+        tools:layout_editor_absoluteY="43dp">
+
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="match_parent"
+            android:layout_height="500dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/contatto_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="@string/nickname" />
+
+                <EditText
+                    android:id="@+id/contatto_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/contatto_nickname"
+                    android:ems="10"
+                    android:inputType="textEmailAddress"
+                    android:text="@string/email" />
+
+                <EditText
+                    android:id="@+id/contatto_numeroDiTelefono"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/contatto_emailPersonale"
+                    android:ems="10"
+                    android:inputType="phone"
+                    android:text="@string/numero" />
+
+                <Button
+                    android:id="@+id/aggiungi_email"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:textAlignment="textStart"
+                    android:layout_gravity="start"
+                    android:text="@string/add_email" />
+                <Button
+                    android:id="@+id/aggiungi_numero"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:textAlignment="textStart"
+                    android:layout_gravity="start"
+                    android:text="@string/add_numero" />
+
+            </LinearLayout>
+
+        </com.google.android.material.navigation.NavigationView>
+
+        <Button
+            android:id="@+id/indietro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:enabled="true"
+            android:text="@string/indietro" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

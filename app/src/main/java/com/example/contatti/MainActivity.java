@@ -20,7 +20,6 @@ import com.google.firebase.auth.FirebaseAuth;
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
             startActivity(new Intent(getApplicationContext(), Login.class));
-            finish();
         }
 
         else {
@@ -32,7 +31,14 @@ import com.google.firebase.auth.FirebaseAuth;
                 public void onClick(View v) {
                     auth.signOut();
                     startActivity(new Intent(getApplicationContext(), Login.class));
-                    finish();
+                }
+            });
+            final Button edit=findViewById(R.id.edit);
+            edit.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), EditActivity.class));
                 }
             });
         }

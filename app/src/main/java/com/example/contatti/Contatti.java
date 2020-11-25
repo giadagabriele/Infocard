@@ -1,22 +1,18 @@
 package com.example.contatti;
 
+import android.widget.EditText;
+
 class Contatti{
-    String nickname;
-    int numeroDiLavoro;
-    int numeroPersonale;
-    String emailLavoro;
-    String emailPersonale;
+    String nickname="Giada Gabriele";
+    int numeroDiTelefono;
+    String email;
 
     String getNickname(){return nickname;}
-    int getNumeroDiLavoro(){return numeroDiLavoro;}
-    int getNumeroPersonale(){return numeroPersonale;}
-    String getEmailLavoro(){return emailLavoro;}
-    String getEmailPersonale(){return emailPersonale;}
+    int getNumeroDiTelefono(){return numeroDiTelefono;}
+    String getEmail(){return email;}
 
     void setNickname(String nickname){this.nickname=nickname;}
-    void setNumeroDiLavoro(int numeroDiLavoro){this.numeroDiLavoro=numeroDiLavoro;}
-    void setNumeroPersonale(int numeroPersonale){this.numeroPersonale=numeroPersonale;}
-    void setEmailLavoro(String emailLavoro){this.emailLavoro=emailLavoro;}
-    void setEmailPersonale(String emailPersonale){this.emailPersonale=emailPersonale;}
+    void setNumeroDiTelefono(int numeroDiTelefono){this.numeroDiTelefono=numeroDiTelefono;}
+    void setEmail(String email){this.email=email;}
 
 }

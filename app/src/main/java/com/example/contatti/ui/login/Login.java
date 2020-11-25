@@ -76,7 +76,6 @@ public class Login extends AppCompatActivity {
                 loadingProgressBar.setVisibility(View.GONE);
                 setResult(Activity.RESULT_OK);
                 //Complete and destroy login activity once successful
-                finish();
             }
         });
 

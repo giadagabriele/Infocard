@@ -7,7 +7,14 @@
     <string name="action_accedi">Accedi</string>
     <string name="invalid_username">Nome utente non valido</string>
     <string name="invalid_password">La password deve essere >5 caratteri</string>
-    <string name="login_failed">"Accesso fallito"</string>
+    <string name="login_failed">Accesso fallito</string>
+    <string name="indietro">indietro</string>
     <string name="esci">Esci</string>
+    <string name="edit">Modifica profilo</string>
+    <string name="nickname">nickname</string>
+    <string name="email">email</string>
+    <string name="numero">numero di telefono</string>
+    <string name="add_email">aggiungi email</string>
+    <string name="add_numero">aggiungi numero di telefono</string>
     <string name="todo">TODO</string>
 </resources>
