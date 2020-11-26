@@ -16,5 +16,8 @@
     <string name="numero">numero di telefono</string>
     <string name="add_email">aggiungi email</string>
     <string name="add_numero">aggiungi numero di telefono</string>
+    <string name="registra_password">inserisci password</string>
+    <string name="registra_nickname">inserisci nickname</string>
+    <string name="registra_email">inserisci email</string>
     <string name="todo">TODO</string>
 </resources>

@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.contatti.MainActivity;
 import com.example.contatti.R;
+import com.example.contatti.RegistrationActivity;
 import com.example.contatti.ui.login.LoginViewModel;
 import com.example.contatti.ui.login.LoginViewModelFactory;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,6 +50,7 @@ public class Login extends AppCompatActivity {
         final EditText usernameEditText = findViewById(R.id.username);
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.accedi);
+        final Button registrationButton=findViewById(R.id.registrati);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
@@ -128,9 +130,19 @@ public class Login extends AppCompatActivity {
                             Toast.makeText(Login.this, "ERRORE", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(), Login.class));
                         }
+                        finish();
                     }
                 });
             }
         });
+
+        registrationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), RegistrationActivity.class));
+                finish();
+            }
+        });
+
     }
 }
