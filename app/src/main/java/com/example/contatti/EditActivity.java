@@ -10,11 +10,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
 public class EditActivity extends AppCompatActivity {
-
+    // Write a message to the database
+    FirebaseDatabase database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +36,7 @@ public class EditActivity extends AppCompatActivity {
                 //dafare
             }
         });
-        final Button indietro=findViewById(R.id.indietro);
+        final Button indietro=findViewById(R.id.indietro_edit);
         indietro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

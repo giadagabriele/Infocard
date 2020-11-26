@@ -35,7 +35,7 @@ import com.google.firebase.auth.FirebaseAuth;
                     finish();
                 }
             });
-            final Button edit=findViewById(R.id.edit);
+            final Button edit=findViewById(R.id.modifica_profilo);
             edit.setOnClickListener(new View.OnClickListener(){
 
                 @Override

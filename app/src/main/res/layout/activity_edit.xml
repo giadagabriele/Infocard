@@ -13,10 +13,9 @@
         tools:layout_editor_absoluteX="119dp"
         tools:layout_editor_absoluteY="43dp">
 
-        <com.google.android.material.navigation.NavigationView
-            android:layout_width="400dp"
-            android:layout_height="500dp"
-            android:layout_gravity="center">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="500dp" >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -28,91 +27,76 @@
                     android:layout_height="50dp"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/edit_nickname"
+                    <ImageView
+                        android:id="@+id/edit_image"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:ems="10"
                         android:layout_marginLeft="10dp"
-                        android:inputType="textPersonName" />
+                        android:layout_marginTop="10dp"
+                        android:clickable="true"
+                        app:srcCompat="@mipmap/ic_launcher_round" />
 
                     <TextView
-                        android:id="@+id/text_nickname"
+                        android:id="@+id/text_edit_image"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
                         android:layout_weight="1"
-                        android:layout_marginLeft="50dp"
-                        android:text="nickname"/>
+                        android:text="Foto profilo" />
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/edit_nickname"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:hint="@string/nickname"
+                    android:inputType="textPersonName" />
 
-                    <EditText
-                        android:id="@+id/edit_email"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/contatto_nickname"
-                        android:ems="10"
-                        android:layout_marginLeft="10dp"
-                        android:inputType="textEmailAddress" />
-                    <TextView
-                        android:id="@+id/text_email"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="50dp"
-                        android:text="email"/>
+                <EditText
+                    android:id="@+id/edit_email"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/contatto_nickname"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/edit_numero"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:layout_marginLeft="10dp"
-                        android:inputType="phone" />
-                    <TextView
-                        android:id="@+id/text_numero"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="50dp"
-                        android:text="numero di telefono"/>
-
-                </LinearLayout>
+                <EditText
+                    android:id="@+id/edit_numero"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:hint="@string/numero"
+                    android:inputType="phone" />
 
                 <Button
                     android:id="@+id/aggiungi_email"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:enabled="true"
-                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center"
                     android:layout_marginTop="30dp"
+                    android:enabled="true"
                     android:text="@string/add_email" />
+
                 <Button
                     android:id="@+id/aggiungi_numero"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:enabled="true"
-                    android:layout_marginLeft="10dp"
                     android:text="@string/add_numero" />
 
             </LinearLayout>
-
-        </com.google.android.material.navigation.NavigationView>
+        </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/indietro"
+            android:id="@+id/indietro_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"

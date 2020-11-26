@@ -12,90 +12,50 @@
         tools:layout_editor_absoluteX="119dp"
         tools:layout_editor_absoluteY="43dp">
 
-        <com.google.android.material.navigation.NavigationView
-            android:layout_width="400dp"
-            android:layout_height="500dp"
-            android:layout_gravity="center">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_gravity="">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/registra_nickname"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:layout_marginTop="50dp"
+                    android:hint="@string/registra_nickname"
+                    android:inputType="textPersonName" />
 
-                    <EditText
-                        android:id="@+id/registra_nickname"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:layout_marginLeft="10dp"
-                        android:inputType="textPersonName" />
+                <EditText
+                    android:id="@+id/registra_password"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:hint="@string/registra_password"
+                    android:inputType="textPassword" />
 
-                    <TextView
-                        android:id="@+id/text_nickname"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="50dp"
-                        android:text="Inserisci nickname"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/registra_password"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:layout_marginLeft="10dp"
-                        android:inputType="textPassword" />
-                    <TextView
-                        android:id="@+id/text_password"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="50dp"
-                        android:text="Inserisci password"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/registra_email"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/contatto_nickname"
-                        android:ems="10"
-                        android:layout_marginLeft="10dp"
-                        android:inputType="textEmailAddress" />
-                    <TextView
-                        android:id="@+id/text_email"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="50dp"
-                        android:text="Inserisci email"/>
-
-                </LinearLayout>
+                <EditText
+                    android:id="@+id/registra_email"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/contatto_nickname"
+                    android:layout_gravity="center"
+                    android:ems="10"
+                    android:hint="@string/registra_email"
+                    android:inputType="textEmailAddress" />
 
             </LinearLayout>
-
-        </com.google.android.material.navigation.NavigationView>
+        </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/indietro"
+            android:id="@+id/indietro_registrazione"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
