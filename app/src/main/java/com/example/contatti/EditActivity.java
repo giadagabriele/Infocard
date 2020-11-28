@@ -19,9 +19,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.w3c.dom.Text;
 
 public class EditActivity extends AppCompatActivity {
-    // Write a message to the database
     private DatabaseReference databaseReference;
-    Contatti c;
+    private Contatti c;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

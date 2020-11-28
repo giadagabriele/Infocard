@@ -3,17 +3,17 @@ package com.example.contatti;
 import android.widget.EditText;
 
 class Contatti{
-    String nickname="Giada Gabriele";
-    int numeroDiTelefono;
-    String email;
+    private String nickname;
+    private int numeroDiTelefono;
+    private String email;
 
-    String getNickname(){return nickname;}
-    int getNumeroDiTelefono(){return numeroDiTelefono;}
-    String getEmail(){return email;}
+    public String getNickname(){return nickname;}
+    public int getNumeroDiTelefono(){return numeroDiTelefono;}
+    public String getEmail(){return email;}
 
-    void setNickname(String nickname){this.nickname=nickname;}
-    void setNumeroDiTelefono(int numeroDiTelefono){this.numeroDiTelefono=numeroDiTelefono;}
-    void setEmail(String email){this.email=email;}
+    public void setNickname(String nickname){this.nickname=nickname;}
+    public void setNumeroDiTelefono(int numeroDiTelefono){this.numeroDiTelefono=numeroDiTelefono;}
+    public void setEmail(String email){this.email=email;}
 
     public Contatti(String nickname, int numeroDiTelefono, String email) {
         this.nickname = nickname;
