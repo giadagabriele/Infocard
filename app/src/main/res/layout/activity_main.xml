@@ -30,7 +30,6 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_toRightOf="@+id/contatto_foto"
-                    android:text="Giada Gabriele"
                     android:textSize="15dp" />
 
                 <TextView
@@ -39,7 +38,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/contatto_foto"
                     android:layout_marginTop="15dp"
-                    android:text="3497219633"
                     android:textSize="15sp" />
 
                 <TextView
@@ -48,7 +46,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/contatto_numeroDiTelefono"
                     android:layout_marginTop="15dp"
-                    android:text="giadagabriele@outlook.com"
                     android:textSize="15sp" />
 
 

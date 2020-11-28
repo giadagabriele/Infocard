@@ -9,6 +9,7 @@
     <string name="invalid_password">La password deve essere >5 caratteri</string>
     <string name="login_failed">Accesso fallito</string>
     <string name="indietro">Indietro</string>
+    <string name="salva">Salva</string>
     <string name="esci">Esci</string>
     <string name="edit">Modifica profilo</string>
     <string name="nickname">Nickname</string>

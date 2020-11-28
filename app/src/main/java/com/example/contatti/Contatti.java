@@ -15,4 +15,9 @@ class Contatti{
     void setNumeroDiTelefono(int numeroDiTelefono){this.numeroDiTelefono=numeroDiTelefono;}
     void setEmail(String email){this.email=email;}
 
+    public Contatti(String nickname, int numeroDiTelefono, String email) {
+        this.nickname = nickname;
+        this.numeroDiTelefono = numeroDiTelefono;
+        this.email = email;
+    }
 }
