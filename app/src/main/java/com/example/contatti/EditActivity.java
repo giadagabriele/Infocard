@@ -43,12 +43,13 @@ public class EditActivity extends AppCompatActivity {
                 String Num=numberEditText.getText().toString().trim();
                 c=new Contatti(Nick,Num,Email);
                 databaseReference= FirebaseDatabase.getInstance().getReference();
-                databaseReference.child("Contatti").child(c.getNickname()).setValue(c, new DatabaseReference.CompletionListener() {
+                databaseReference.child(c.getNickname()).setValue(c, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
 
                     }
                 });
+                Toast.makeText(EditActivity.this, "MODIFICA SALVATA", Toast.LENGTH_SHORT).show();
             }
         });
 

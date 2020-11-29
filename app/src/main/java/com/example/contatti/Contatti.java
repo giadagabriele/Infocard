@@ -1,7 +1,5 @@
 package com.example.contatti;
 
-import android.widget.EditText;
-
 class Contatti{
     private String nickname;
     private String numeroDiTelefono;
