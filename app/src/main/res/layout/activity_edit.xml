@@ -20,7 +20,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:id="@+id/layout">
 
                 <ImageView
                     android:id="@+id/edit_image"
@@ -44,7 +45,7 @@
                     android:id="@+id/edit_email"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/contatto_nickname"
+                    android:layout_below="@+id/edit_nickname"
                     android:layout_gravity="center"
                     android:ems="10"
                     android:hint="@string/email"

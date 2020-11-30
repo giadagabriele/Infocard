@@ -4,11 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.Layout;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,10 +60,21 @@ public class EditActivity extends AppCompatActivity {
         });
 
         final Button aggiungiEmail=findViewById(R.id.aggiungi_email);
+
         aggiungiEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //dafare
+                LinearLayout l=findViewById(R.id.layout);
+                EditText t=new EditText(v.getContext());
+                RelativeLayout.LayoutParams lp=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                //lp.gravity=Gravity.CENTER;
+                lp.addRule(RelativeLayout.BELOW,R.id.edit_numero);
+                t.setLayoutParams(lp);
+                t.setHint("aggiungi email 2");
+                t.setEms(10);
+                t.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                t.setGravity(Gravity.CENTER);
+                l.addView(t);
             }
         });
         final Button aggiungiNumero=findViewById(R.id.aggiungi_numero);
