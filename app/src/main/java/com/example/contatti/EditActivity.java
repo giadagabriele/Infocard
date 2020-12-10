@@ -23,6 +23,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,6 +33,7 @@ import org.w3c.dom.Text;
 
 public class EditActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
+    private FirebaseAuth auth;
     private Contatti c;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +47,12 @@ public class EditActivity extends AppCompatActivity {
                 final EditText nicknameEditText = findViewById(R.id.edit_nickname);
                 final EditText emailEditText = findViewById(R.id.edit_email);
                 final EditText numberEditText = findViewById(R.id.edit_numero);
-                String Email=emailEditText.getText().toString().trim();
+                String Email=auth.getCurrentUser().getEmail();
                 String Nick=nicknameEditText.getText().toString().trim();
                 String Num=numberEditText.getText().toString().trim();
                 c=new Contatti(Nick,Num,Email);
                 databaseReference= FirebaseDatabase.getInstance().getReference();
-                databaseReference.child(c.getNickname()).setValue(c, new DatabaseReference.CompletionListener() {
+                databaseReference.child(c.getEmail()).setValue(c, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
 
@@ -59,22 +62,19 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
+
+        FirebaseAuth auth=FirebaseAuth.getInstance();
+        FirebaseUser utente=auth.getCurrentUser();
+        LinearLayout l=findViewById(R.id.layout_edit);
+        /*for(int i=0;i<4;i++){   //mi richiamo i dati dal db e aggiungi su ognuno
+            aggiungiTextField(l,"inserisci email",InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        }*/
         final Button aggiungiEmail=findViewById(R.id.aggiungi_email);
 
         aggiungiEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinearLayout l=findViewById(R.id.layout);
-                EditText t=new EditText(v.getContext());
-                RelativeLayout.LayoutParams lp=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                //lp.gravity=Gravity.CENTER;
-                lp.addRule(RelativeLayout.BELOW,R.id.edit_numero);
-                t.setLayoutParams(lp);
-                t.setHint("aggiungi email 2");
-                t.setEms(10);
-                t.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                t.setGravity(Gravity.CENTER);
-                l.addView(t);
+                aggiungiTextFieldVuoto(l,"inserisci email",InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
             }
         });
         final Button aggiungiNumero=findViewById(R.id.aggiungi_numero);
@@ -92,6 +92,25 @@ public class EditActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+    }
+    private void aggiungiTextField(LinearLayout l, String text, int inputType){
+        EditText t=new EditText(this);
+        LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        t.setLayoutParams(lp);
+        t.setText(text);
+        t.setEms(10);
+        t.setInputType(inputType);
+        t.setGravity(Gravity.CENTER);
+        l.addView(t);
+    }
+    private void aggiungiTextFieldVuoto(LinearLayout l, String hint, int inputType){
+        EditText t=new EditText(this);
+        LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        t.setLayoutParams(lp);
+        t.setHint(hint);
+        t.setEms(10);
+        t.setInputType(inputType);
+        t.setGravity(Gravity.CENTER);
+        l.addView(t);
     }
 }

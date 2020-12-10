@@ -44,9 +44,9 @@ import org.w3c.dom.Text;
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()){
                         String key=auth.getCurrentUser().getEmail();
-                        nicknameEditText.setText(snapshot.child("GiadaGabriele").child("nickname").getValue().toString());
-                        emailEditText.setText(snapshot.child("GiadaGabriele").child("email").getValue().toString());
-                        numberEditText.setText(snapshot.child("GiadaGabriele").child("numeroDiTelefono").getValue().toString());
+                        nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
+                        emailEditText.setText(snapshot.child(key).child("email").getValue().toString());
+                        numberEditText.setText(snapshot.child(key).child("numeroDiTelefono").getValue().toString());
                     }
                 }
 
@@ -71,7 +71,7 @@ import org.w3c.dom.Text;
 
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(getApplicationContext(), Edit_Activity2.class));
+                    startActivity(new Intent(getApplicationContext(), EditActivity.class));
                     finish();
                 }
             });
