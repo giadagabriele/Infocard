@@ -47,7 +47,7 @@ import org.w3c.dom.Text;
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
+                    if (snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("numeroDiTelefono").getValue()!=null) {
                         nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
                         numberEditText.setText(snapshot.child(key).child("numeroDiTelefono").getValue().toString());
                     }
