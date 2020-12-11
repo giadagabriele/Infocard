@@ -42,29 +42,21 @@
                             app:srcCompat="@mipmap/ic_launcher_round" />
 
                         <EditText
-                            android:id="@+id/edit_email"
-                            android:layout_width="300dp"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/edit_nickname"
-                            android:layout_gravity="center"
-                            android:ems="10"
-                            android:hint="@string/email"
-                            android:inputType="textEmailAddress" />
-
-                        <EditText
                             android:id="@+id/edit_nickname"
-                            android:layout_width="300dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:textAlignment="center"
                             android:ems="10"
                             android:hint="@string/nickname"
                             android:inputType="textPersonName" />
 
                         <EditText
                             android:id="@+id/edit_numero"
-                            android:layout_width="300dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:textAlignment="center"
                             android:ems="10"
                             android:hint="@string/numero"
                             android:inputType="phone" />

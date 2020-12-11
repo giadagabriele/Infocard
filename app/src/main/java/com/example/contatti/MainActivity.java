@@ -1,6 +1,7 @@
  package com.example.contatti;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.contatti.ui.login.Login;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,7 +26,8 @@ import org.w3c.dom.Text;
  public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference databaseReference;
-     @Override
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         auth = FirebaseAuth.getInstance();
@@ -35,17 +38,17 @@ import org.w3c.dom.Text;
 
         else {
             setContentView(R.layout.activity_main);
-            databaseReference= FirebaseDatabase.getInstance().getReference();
+            databaseReference = FirebaseDatabase.getInstance().getReference();
+            String key = encodeUserEmail(auth.getCurrentUser().getEmail());
             final TextView nicknameEditText = findViewById(R.id.contatto_nickname);
             final TextView emailEditText = findViewById(R.id.contatto_email);
             final TextView numberEditText = findViewById(R.id.contatto_numeroDiTelefono);
+            emailEditText.setText(decodeUserEmail(key));
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()){
-                        String key=auth.getCurrentUser().getEmail();
+                    if (snapshot.exists()) {
                         nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
-                        emailEditText.setText(snapshot.child(key).child("email").getValue().toString());
                         numberEditText.setText(snapshot.child(key).child("numeroDiTelefono").getValue().toString());
                     }
                 }
@@ -56,18 +59,19 @@ import org.w3c.dom.Text;
                 }
             });
 
-            final Button logout=findViewById(R.id.esci);
+            final Button logout = findViewById(R.id.esci);
             logout.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
                     auth.signOut();
                     startActivity(new Intent(getApplicationContext(), Login.class));
+
                     finish();
                 }
             });
-            final Button edit=findViewById(R.id.modifica_profilo);
-            edit.setOnClickListener(new View.OnClickListener(){
+            final Button edit = findViewById(R.id.modifica_profilo);
+            edit.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
@@ -77,5 +81,11 @@ import org.w3c.dom.Text;
             });
         }
     }
+     static String encodeUserEmail(String userEmail) {
+         return userEmail.replace(".", ",");
+     }
 
+     static String decodeUserEmail(String userEmail) {
+         return userEmail.replace(",", ".");
+     }
 }

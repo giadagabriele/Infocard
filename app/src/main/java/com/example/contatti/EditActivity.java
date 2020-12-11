@@ -31,6 +31,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 public class EditActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
@@ -39,20 +41,19 @@ public class EditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-
+        auth=FirebaseAuth.getInstance();
         final Button salva=findViewById(R.id.salva_edit);
         salva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final EditText nicknameEditText = findViewById(R.id.edit_nickname);
-                final EditText emailEditText = findViewById(R.id.edit_email);
                 final EditText numberEditText = findViewById(R.id.edit_numero);
-                String Email=auth.getCurrentUser().getEmail();
+                String Email=encodeUserEmail(auth.getCurrentUser().getEmail());
                 String Nick=nicknameEditText.getText().toString().trim();
                 String Num=numberEditText.getText().toString().trim();
-                c=new Contatti(Nick,Num,Email);
+                c=new Contatti(Nick,Num);
                 databaseReference= FirebaseDatabase.getInstance().getReference();
-                databaseReference.child(c.getEmail()).setValue(c, new DatabaseReference.CompletionListener() {
+                databaseReference.child(Email).setValue(c, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
 
@@ -62,9 +63,6 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-
-        FirebaseAuth auth=FirebaseAuth.getInstance();
-        FirebaseUser utente=auth.getCurrentUser();
         LinearLayout l=findViewById(R.id.layout_edit);
         /*for(int i=0;i<4;i++){   //mi richiamo i dati dal db e aggiungi su ognuno
             aggiungiTextField(l,"inserisci email",InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
@@ -74,14 +72,14 @@ public class EditActivity extends AppCompatActivity {
         aggiungiEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                aggiungiTextFieldVuoto(l,"inserisci email",InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                aggiungiTextFieldVuoto(l,"Email",InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
             }
         });
         final Button aggiungiNumero=findViewById(R.id.aggiungi_numero);
         aggiungiNumero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //dafare
+                aggiungiTextFieldVuoto(l,"Numero di telefono",InputType.TYPE_CLASS_PHONE);
             }
         });
         final Button indietro=findViewById(R.id.indietro_edit);
@@ -93,7 +91,7 @@ public class EditActivity extends AppCompatActivity {
             }
         });
     }
-    private void aggiungiTextField(LinearLayout l, String text, int inputType){
+    /*private void aggiungiTextField(LinearLayout l, String text, int inputType){
         EditText t=new EditText(this);
         LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         t.setLayoutParams(lp);
@@ -102,7 +100,7 @@ public class EditActivity extends AppCompatActivity {
         t.setInputType(inputType);
         t.setGravity(Gravity.CENTER);
         l.addView(t);
-    }
+    }*/
     private void aggiungiTextFieldVuoto(LinearLayout l, String hint, int inputType){
         EditText t=new EditText(this);
         LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -112,5 +110,14 @@ public class EditActivity extends AppCompatActivity {
         t.setInputType(inputType);
         t.setGravity(Gravity.CENTER);
         l.addView(t);
+
+    }
+
+    static String encodeUserEmail(String userEmail) {
+        return userEmail.replace(".", ",");
+    }
+
+    static String decodeUserEmail(String userEmail) {
+        return userEmail.replace(",", ".");
     }
 }

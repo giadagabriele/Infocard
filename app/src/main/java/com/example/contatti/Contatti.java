@@ -1,21 +1,20 @@
 package com.example.contatti;
 
+import java.util.ArrayList;
+
 class Contatti{
     private String nickname;
     private String numeroDiTelefono;
-    private String email;
+    private ArrayList<String> extras;
 
     public String getNickname(){return nickname;}
     public String getNumeroDiTelefono(){return numeroDiTelefono;}
-    public String getEmail(){return email;}
 
     public void setNickname(String nickname){this.nickname=nickname;}
     public void setNumeroDiTelefono(String numeroDiTelefono){this.numeroDiTelefono=numeroDiTelefono;}
-    public void setEmail(String email){this.email=email;}
 
-    public Contatti(String nickname, String numeroDiTelefono, String email) {
+    public Contatti(String nickname, String numeroDiTelefono) {
         this.nickname = nickname;
         this.numeroDiTelefono = numeroDiTelefono;
-        this.email = email;
     }
 }
