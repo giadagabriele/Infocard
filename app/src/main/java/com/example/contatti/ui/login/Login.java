@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
@@ -24,11 +23,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.contatti.MainActivity;
+import com.example.contatti.HomeActivity;
+import com.example.contatti.ProfileActivity;
 import com.example.contatti.R;
 import com.example.contatti.RegistrationActivity;
-import com.example.contatti.ui.login.LoginViewModel;
-import com.example.contatti.ui.login.LoginViewModelFactory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -123,7 +121,7 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(Login.this, "ACCESSO EFFETTUATO", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         }
                         else {
                             Toast.makeText(Login.this, "ERRORE", Toast.LENGTH_SHORT).show();

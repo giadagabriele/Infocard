@@ -23,21 +23,12 @@
                 android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/registra_nickname"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:ems="10"
-                    android:layout_marginTop="50dp"
-                    android:hint="@string/registra_nickname"
-                    android:inputType="textPersonName" />
-
-                <EditText
                     android:id="@+id/registra_password"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:ems="10"
+                    android:layout_marginTop="50dp"
                     android:hint="@string/registra_password"
                     android:inputType="textPassword" />
 

@@ -62,12 +62,12 @@
             android:enabled="true"
             android:text="@string/edit" />
     <Button
-        android:id="@+id/esci"
+        android:id="@+id/indietro_profilo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"
         android:layout_marginRight="0dp"
         android:enabled="true"
-        android:text="@string/esci" />
+        android:text="@string/indietro" />
 
 </LinearLayout>
