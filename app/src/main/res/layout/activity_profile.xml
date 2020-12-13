@@ -20,9 +20,12 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginRight="15dp"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:src="@mipmap/ic_launcher_round"
+                    android:contentDescription="@string/todo"
+                    android:layout_marginEnd="15dp" />
 
                 <TextView
                     android:id="@+id/contatto_nickname"
@@ -30,7 +33,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_toRightOf="@+id/contatto_foto"
-                    android:textSize="15dp" />
+                    android:textSize="15sp"
+                    android:layout_toEndOf="@+id/contatto_foto" />
 
                 <TextView
                     android:id="@+id/contatto_numeroDiTelefono"

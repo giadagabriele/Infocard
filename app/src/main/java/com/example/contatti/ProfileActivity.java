@@ -25,54 +25,47 @@ import com.google.firebase.database.ValueEventListener;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() == null) {
-            startActivity(new Intent(getApplicationContext(), Login.class));
-            finish();
-        }
-
-        else {
-            setContentView(R.layout.activity_profile);
-            databaseReference = FirebaseDatabase.getInstance().getReference();
-            String key = encodeUserEmail(auth.getCurrentUser().getEmail());
-            final TextView nicknameEditText = findViewById(R.id.contatto_nickname);
-            final TextView emailEditText = findViewById(R.id.contatto_email);
-            final TextView numberEditText = findViewById(R.id.contatto_numeroDiTelefono);
-            emailEditText.setText(decodeUserEmail(key));
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("numeroDiTelefono").getValue()!=null) {
-                        nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
-                        numberEditText.setText(snapshot.child(key).child("numeroDiTelefono").getValue().toString());
-                    }
+        setContentView(R.layout.activity_profile);
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        String key = encodeUserEmail(auth.getCurrentUser().getEmail());
+        final TextView nicknameEditText = findViewById(R.id.contatto_nickname);
+        final TextView emailEditText = findViewById(R.id.contatto_email);
+        final TextView numberEditText = findViewById(R.id.contatto_numeroDiTelefono);
+        emailEditText.setText(decodeUserEmail(key));
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("numeroDiTelefono").getValue()!=null) {
+                    nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
+                    numberEditText.setText(snapshot.child(key).child("numeroDiTelefono").getValue().toString());
                 }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                }
-            });
+            }
+        });
 
-            final Button indietro = findViewById(R.id.indietro_profilo);
-            indietro.setOnClickListener(new View.OnClickListener() {
+        final Button indietro = findViewById(R.id.indietro_profilo);
+        indietro.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
 
-                    finish();
-                }
-            });
-            final Button edit = findViewById(R.id.modifica_profilo);
-            edit.setOnClickListener(new View.OnClickListener() {
+                finish();
+            }
+        });
+        final Button edit = findViewById(R.id.modifica_profilo);
+        edit.setOnClickListener(new View.OnClickListener() {
 
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getApplicationContext(), EditActivity.class));
-                    finish();
-                }
-            });
-        }
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), EditActivity.class));
+                finish();
+            }
+        });
     }
      static String encodeUserEmail(String userEmail) {
          return userEmail.replace(".", ",");

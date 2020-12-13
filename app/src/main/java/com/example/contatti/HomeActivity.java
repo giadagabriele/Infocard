@@ -16,26 +16,31 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        auth=FirebaseAuth.getInstance();
-        final Button profilo=findViewById(R.id.profilo);
-        profilo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                finish();
+        auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null) {
+            startActivity(new Intent(getApplicationContext(), Login.class));
+            finish();
+        } else {
+            final Button profilo = findViewById(R.id.profilo);
+            profilo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                    finish();
 
-            }
-        });
-        final Button logout = findViewById(R.id.esci_home);
-        logout.setOnClickListener(new View.OnClickListener() {
+                }
+            });
+            final Button logout = findViewById(R.id.esci_home);
+            logout.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                auth.signOut();
-                startActivity(new Intent(getApplicationContext(), Login.class));
+                @Override
+                public void onClick(View v) {
+                    auth.signOut();
+                    startActivity(new Intent(getApplicationContext(), Login.class));
 
-                finish();
-            }
-        });
+                    finish();
+                }
+            });
+        }
     }
 }
