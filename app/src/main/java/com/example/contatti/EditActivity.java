@@ -69,15 +69,16 @@ public class EditActivity extends AppCompatActivity {
                 }
                 c = new Contatti(nick, num, values);
                 databaseReference.child(Email).setValue(c, new DatabaseReference.CompletionListener() {
+
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                         startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                         finish();
+                        Toast.makeText(EditActivity.this, "MODIFICA SALVATA", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-                Toast.makeText(EditActivity.this, "MODIFICA SALVATA", Toast.LENGTH_SHORT).show();
             }
+
         });
 
         final Button aggiungiEmail=findViewById(R.id.aggiungi_email);
