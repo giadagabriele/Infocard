@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
         final TextView nicknameEditText = findViewById(R.id.contatto_nickname);
         final TextView emailEditText = findViewById(R.id.contatto_email);
         final TextView numberEditText = findViewById(R.id.contatto_numeroDiTelefono);
+        emailEditText.setText(auth.getCurrentUser().getEmail());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -38,7 +39,6 @@ import com.google.firebase.database.ValueEventListener;
                 && snapshot.child(key).child("email").getValue()!=null) {
                     nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
                     numberEditText.setText(snapshot.child(key).child("numeroDiTelefono").getValue().toString());
-                    emailEditText.setText(snapshot.child(key).child("email").getValue().toString());
                 }
             }
 

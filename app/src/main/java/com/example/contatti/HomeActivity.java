@@ -66,6 +66,7 @@ public class HomeActivity extends AppCompatActivity {
                     }
                     recyclerView = findViewById(R.id.recycler);
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    recyclerView.setHasFixedSize(true);
                     adapter = new HomeAdapter(context, contatti);
                     recyclerView.setAdapter(adapter);
                 }

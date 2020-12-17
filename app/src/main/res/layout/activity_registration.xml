@@ -18,25 +18,25 @@
             android:layout_gravity="">
 
             <EditText
-                android:id="@+id/registra_email"
+                android:id="@+id/registra_password"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
                 android:ems="10"
-                android:hint="@string/registra_email"
-                android:importantForAutofill="no"
-                android:inputType="textEmailAddress" />
+                android:hint="@string/registra_password"
+                android:inputType="textPassword"
+                android:importantForAutofill="no" />
 
             <EditText
-                android:id="@+id/registra_password"
+                android:id="@+id/registra_email"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:autofillHints=""
                 android:ems="10"
-                android:hint="@string/registra_password"
-                android:inputType="textPassword" />
+                android:hint="@string/registra_email"
+                android:inputType="textEmailAddress"
+                android:autofillHints="" />
 
         </androidx.cardview.widget.CardView>
 

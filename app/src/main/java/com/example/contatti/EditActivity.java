@@ -51,7 +51,7 @@ public class EditActivity extends AppCompatActivity {
                 else{
                     nickname=aggiungiTextFieldVuoto(l,"Nickname",InputType.TYPE_CLASS_TEXT);
                     numero=aggiungiTextFieldVuoto(l,"Numero di telefono",InputType.TYPE_CLASS_PHONE);
-                    email=aggiungiTextFieldVuoto(l, "Email", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                    email=aggiungiTextField(l, auth.getCurrentUser().getEmail(), InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 }
             }
 

@@ -46,9 +46,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @NonNull
     @Override
     public HomeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ////////////////////////////////////////////////////////////////////////////////
-        View view = inflater.inflate(R.layout.activity_home, parent, false);
-        ////////////////////////////////////////////////////////////////////////////////
+        View view = inflater.inflate(R.layout.milena, parent, false);
         return new HomeAdapter.ViewHolder(view);
     }
 
