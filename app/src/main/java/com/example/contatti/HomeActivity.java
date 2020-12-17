@@ -6,10 +6,12 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.contatti.ui.login.Login;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +34,8 @@ import java.util.ArrayList;
 public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference databaseReference;
+    private HomeAdapter adapter;
+    private RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +46,9 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), Login.class));
             finish();
         } else {
-            String key=encodeUserEmail(auth.getCurrentUser().getEmail());
+            ArrayList<Contatti> contatti = new ArrayList<Contatti>();
+            String key=auth.getCurrentUser().getUid();
+            Context context=this;
             final TextView nicknameEditText = findViewById(R.id.home_nickname);
             final TextView emailEditText = findViewById(R.id.home_email);
             final TextView numberEditText = findViewById(R.id.home_numeroDiTelefono);
@@ -50,13 +57,17 @@ public class HomeActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot d:snapshot.getChildren()) {
                         if(!d.getKey().equals(key)) {
-                            if (snapshot.child(d.getKey()).child("nickname").getValue() != null && snapshot.child(key).child("numeroDiTelefono").getValue() != null) {
-                                nicknameEditText.setText(snapshot.child(d.getKey()).child("nickname").getValue().toString());
-                                numberEditText.setText(snapshot.child(d.getKey()).child("numeroDiTelefono").getValue().toString());
-                                emailEditText.setText(decodeUserEmail(d.getKey()));
+                            if (snapshot.child(d.getKey()).child("nickname").getValue() != null && snapshot.child(d.getKey()).child("numeroDiTelefono").getValue() != null
+                                    && snapshot.child(d.getKey()).child("email").getValue()!=null) {
+                                ArrayList<String> extras = new ArrayList<String>();
+                                contatti.add(new Contatti(snapshot.child(d.getKey()).child("nickname").getValue().toString(),snapshot.child(d.getKey()).child("numeroDiTelefono").getValue().toString(),snapshot.child(d.getKey()).child("email").getValue().toString(),extras));
                             }
                         }
                     }
+                    recyclerView = findViewById(R.id.recycler);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    adapter = new HomeAdapter(context, contatti);
+                    recyclerView.setAdapter(adapter);
                 }
 
                 @Override
@@ -86,12 +97,5 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
         }
-    }
-    static String encodeUserEmail(String userEmail) {
-        return userEmail.replace(".", ",");
-    }
-
-    static String decodeUserEmail(String userEmail) {
-        return userEmail.replace(",", ".");
     }
 }

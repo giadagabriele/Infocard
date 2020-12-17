@@ -27,28 +27,31 @@ public class EditActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
     private Contatti c;
-    private String nick=null,num=null;
-    private EditText nickname,numero,extra;
-    private ArrayList<String> values;
+    private String nick=null,num=null,mail=null;
+    private EditText nickname,numero,email,extra;
+    private ArrayList<String> extras;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         auth=FirebaseAuth.getInstance();
-        String key=encodeUserEmail(auth.getCurrentUser().getEmail());
-        values=new ArrayList<String>();
+        String key=auth.getCurrentUser().getUid();
+        extras=new ArrayList<String>();
         databaseReference= FirebaseDatabase.getInstance().getReference();
         LinearLayout l=findViewById(R.id.layout_edit);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("numeroDiTelefono").getValue()!=null) {
+                if(snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("numeroDiTelefono").getValue()!=null
+                        && snapshot.child(key).child("email").getValue()!=null) {
                     nickname = aggiungiTextField(l, snapshot.child(key).child("nickname").getValue().toString(), InputType.TYPE_CLASS_TEXT);
                     numero = aggiungiTextField(l, snapshot.child(key).child("numeroDiTelefono").getValue().toString(), InputType.TYPE_CLASS_PHONE);
+                    email = aggiungiTextField(l, snapshot.child(key).child("email").getValue().toString(), InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 }
                 else{
                     nickname=aggiungiTextFieldVuoto(l,"Nickname",InputType.TYPE_CLASS_TEXT);
                     numero=aggiungiTextFieldVuoto(l,"Numero di telefono",InputType.TYPE_CLASS_PHONE);
+                    email=aggiungiTextFieldVuoto(l, "Email", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 }
             }
 
@@ -61,14 +64,15 @@ public class EditActivity extends AppCompatActivity {
         salva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String Email=encodeUserEmail(auth.getCurrentUser().getEmail());
+                String key=auth.getCurrentUser().getUid();
                 nick=nickname.getText().toString().trim();
                 num=numero.getText().toString().trim();
+                mail=email.getText().toString().trim();
                 if(extra!=null) {
-                    values.add(extra.getText().toString().trim());
+                    extras.add(extra.getText().toString().trim());
                 }
-                c = new Contatti(nick, num, values);
-                databaseReference.child(Email).setValue(c, new DatabaseReference.CompletionListener() {
+                c = new Contatti(nick, num, mail, extras);
+                databaseReference.child(key).setValue(c, new DatabaseReference.CompletionListener() {
 
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
@@ -126,13 +130,5 @@ public class EditActivity extends AppCompatActivity {
         t.setGravity(Gravity.CENTER);
         l.addView(t);
         return t;
-    }
-
-    static String encodeUserEmail(String userEmail) {
-        return userEmail.replace(".", ",");
-    }
-
-    static String decodeUserEmail(String userEmail) {
-        return userEmail.replace(",", ".");
     }
 }
