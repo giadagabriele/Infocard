@@ -47,7 +47,7 @@
         android:id="@+id/imageView"
         android:layout_width="114dp"
         android:layout_height="104dp"
-        android:contentDescription="@string/todo"
+        android:contentDescription="@string/logo"
         android:src="@mipmap/logo_round"
         app:layout_constraintBottom_toTopOf="@+id/login_email"
         app:layout_constraintEnd_toEndOf="parent"

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -77,7 +78,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
 
-            final Button profilo = findViewById(R.id.profilo);
+            final ImageView profilo = findViewById(R.id.profilo);
             profilo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -86,7 +87,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 }
             });
-            final Button logout = findViewById(R.id.esci_home);
+            final ImageView logout = findViewById(R.id.esci_home);
             logout.setOnClickListener(new View.OnClickListener() {
 
                 @Override

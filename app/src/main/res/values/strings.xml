@@ -20,5 +20,6 @@
     <string name="registra_password">Inserisci password >5 caratteri</string>
     <string name="registra_email">Inserisci email</string>
     <string name="profilo">Profilo</string>
-    <string name="todo">TODO</string>
+    <string name="logo">Logo</string>
+    <string name="image_profile">Immagine profilo</string>
 </resources>
