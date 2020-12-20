@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.contatti.ui.login.Login;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -50,18 +53,24 @@ public class HomeActivity extends AppCompatActivity {
             ArrayList<Contatti> contatti = new ArrayList<Contatti>();
             String key=auth.getCurrentUser().getUid();
             Context context=this;
+            final ImageView profilo = findViewById(R.id.profilo);
             final TextView nicknameEditText = findViewById(R.id.home_nickname);
             final TextView emailEditText = findViewById(R.id.home_email);
             final TextView numberEditText = findViewById(R.id.home_numeroDiTelefono);
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.child(key).child("foto").getValue()!=null){
+                        Glide.with(getBaseContext())
+                                .load(Uri.parse(snapshot.child(key).child("foto").getValue().toString())).apply(RequestOptions.circleCropTransform())
+                                .into(profilo);
+                    }
                     for(DataSnapshot d:snapshot.getChildren()) {
                         if(!d.getKey().equals(key)) {
                             if (snapshot.child(d.getKey()).child("nickname").getValue() != null && snapshot.child(d.getKey()).child("numeroDiTelefono").getValue() != null
-                                    && snapshot.child(d.getKey()).child("email").getValue()!=null) {
+                                    && snapshot.child(d.getKey()).child("email").getValue()!=null && snapshot.child(d.getKey()).child("foto").getValue()!=null) {
                                 ArrayList<String> extras = new ArrayList<String>();
-                                contatti.add(new Contatti(snapshot.child(d.getKey()).child("nickname").getValue().toString(),snapshot.child(d.getKey()).child("numeroDiTelefono").getValue().toString(),snapshot.child(d.getKey()).child("email").getValue().toString(),extras));
+                                contatti.add(new Contatti(snapshot.child(d.getKey()).child("foto").getValue().toString(),snapshot.child(d.getKey()).child("nickname").getValue().toString(), snapshot.child(d.getKey()).child("numeroDiTelefono").getValue().toString(), snapshot.child(d.getKey()).child("email").getValue().toString(), extras));
                             }
                         }
                     }
@@ -78,7 +87,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
 
-            final ImageView profilo = findViewById(R.id.profilo);
             profilo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

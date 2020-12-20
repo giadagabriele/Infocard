@@ -4,28 +4,47 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class EditActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
+    private StorageReference mStorageRef;
+    private Uri imageUri;
+    private ImageView image;
+    private static int RESULT_LOAD_IMAGE = 1;
     private Contatti c;
     private String nick=null,num=null,mail=null;
     private EditText nickname,numero,email,extra;
@@ -35,6 +54,8 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         auth=FirebaseAuth.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        image=findViewById(R.id.edit_image);
         String key=auth.getCurrentUser().getUid();
         extras=new ArrayList<String>();
         databaseReference= FirebaseDatabase.getInstance().getReference();
@@ -53,12 +74,24 @@ public class EditActivity extends AppCompatActivity {
                     numero=aggiungiTextFieldVuoto(l,"Numero di telefono",InputType.TYPE_CLASS_PHONE);
                     email=aggiungiTextField(l, auth.getCurrentUser().getEmail(), InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 }
+                if(snapshot.child(key).child("foto").getValue()!=null){
+                    Glide.with(getBaseContext())
+                            .load(Uri.parse(snapshot.child(key).child("foto").getValue().toString())).apply(RequestOptions.circleCropTransform())
+                            .into(image);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+        });
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+
         });
         final Button salva=findViewById(R.id.salva_edit);
         salva.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +104,7 @@ public class EditActivity extends AppCompatActivity {
                 if(extra!=null) {
                     extras.add(extra.getText().toString().trim());
                 }
-                c = new Contatti(nick, num, mail, extras);
+                c = new Contatti(imageUri.toString(),nick, num, mail, extras);
                 databaseReference.child(key).setValue(c, new DatabaseReference.CompletionListener() {
 
                     @Override
@@ -81,6 +114,25 @@ public class EditActivity extends AppCompatActivity {
                         Toast.makeText(EditActivity.this, "MODIFICA SALVATA", Toast.LENGTH_SHORT).show();
                     }
                 });
+                StorageReference riversRef = mStorageRef.child(key).child("foto");
+                if(imageUri!=null) {
+                    riversRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    databaseReference.child(key).child("foto").setValue(uri.toString());
+                                }
+                            });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+                }
             }
 
         });
@@ -108,6 +160,7 @@ public class EditActivity extends AppCompatActivity {
                 finish();
             }
         });
+
     }
     private EditText aggiungiTextField(LinearLayout l, String text, int inputType){
         EditText t=new EditText(this);
@@ -130,5 +183,17 @@ public class EditActivity extends AppCompatActivity {
         t.setGravity(Gravity.CENTER);
         l.addView(t);
         return t;
+    }
+    private void openGallery() {
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, RESULT_LOAD_IMAGE);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == RESULT_LOAD_IMAGE){
+            imageUri = data.getData();
+            image.setImageURI(imageUri);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.contatti;
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -56,7 +60,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.nickname.setText(contatto.getNickname());
         holder.numeroDiTelefono.setText(contatto.getNumeroDiTelefono());
         holder.email.setText(contatto.getEmail());
-
+        Glide.with(holder.itemView)
+                .load(Uri.parse(contatto.getFoto())).apply(RequestOptions.circleCropTransform())
+                .into(holder.photo);
         List<String> extras = contatto.getExtras();
         for(String extra : extras) {
             holder.vlayout.addView(createTextView(extra));

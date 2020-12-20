@@ -4,12 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.contatti.ui.login.Login;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
         final TextView nicknameEditText = findViewById(R.id.contatto_nickname);
         final TextView emailEditText = findViewById(R.id.contatto_email);
         final TextView numberEditText = findViewById(R.id.contatto_numeroDiTelefono);
+        final ImageView profilePic=findViewById(R.id.contatto_foto);
         emailEditText.setText(auth.getCurrentUser().getEmail());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -39,6 +43,11 @@ import com.google.firebase.database.ValueEventListener;
                 && snapshot.child(key).child("email").getValue()!=null) {
                     nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
                     numberEditText.setText(snapshot.child(key).child("numeroDiTelefono").getValue().toString());
+                }
+                if(snapshot.child(key).child("foto").getValue()!=null){
+                    Glide.with(getBaseContext())
+                            .load(Uri.parse(snapshot.child(key).child("foto").getValue().toString())).apply(RequestOptions.circleCropTransform())
+                            .into(profilePic);
                 }
             }
 
@@ -67,5 +76,7 @@ import com.google.firebase.database.ValueEventListener;
                 finish();
             }
         });
+
     }
+
 }
