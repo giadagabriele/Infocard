@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -18,7 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
-
+    boolean prima=false;
     //Contiene gli elementi della cardview
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView photo;
@@ -33,7 +34,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             numeroDiTelefono= itemView.findViewById(R.id.home_numeroDiTelefono);
             email=itemView.findViewById(R.id.home_email);
             cardView = itemView.findViewById(R.id.cardview_home);
-            vlayout = itemView.findViewById(R.id.home_view);
+            vlayout = itemView.findViewById(R.id.valori);
+
         }
     }
 
@@ -50,7 +52,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @NonNull
     @Override
     public HomeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.milena, parent, false);
+        View view = inflater.inflate(R.layout.activity_users, parent, false);
         return new HomeAdapter.ViewHolder(view);
     }
 
@@ -64,8 +66,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 .load(Uri.parse(contatto.getFoto())).apply(RequestOptions.circleCropTransform())
                 .into(holder.photo);
         List<String> extras = contatto.getExtras();
-        for(String extra : extras) {
-            holder.vlayout.addView(createTextView(extra));
+        for (int i = 0; i < extras.size(); i++) {
+            if(!prima) {
+                holder.vlayout.addView(createTextView(extras.get(i)));
+                if(i==extras.size()-1){
+                    prima=true;
+                }
+            }
         }
     }
 
@@ -73,7 +80,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         TextView t = new TextView(context);
         t.setText(text);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(20,15,0,0);
+        t.setTextSize(15);
+        params.setMargins(38,40,0,0);
         t.setLayoutParams(params);
         return t;
     }

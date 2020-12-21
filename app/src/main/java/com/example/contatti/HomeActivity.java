@@ -12,6 +12,7 @@ import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         auth = FirebaseAuth.getInstance();
+        Context context=this;
         databaseReference= FirebaseDatabase.getInstance().getReference();
         if (auth.getCurrentUser() == null) {
             startActivity(new Intent(getApplicationContext(), Login.class));
@@ -52,7 +54,6 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             ArrayList<Contatti> contatti = new ArrayList<Contatti>();
             String key=auth.getCurrentUser().getUid();
-            Context context=this;
             final ImageView profilo = findViewById(R.id.profilo);
             final TextView nicknameEditText = findViewById(R.id.home_nickname);
             final TextView emailEditText = findViewById(R.id.home_email);
@@ -66,10 +67,15 @@ public class HomeActivity extends AppCompatActivity {
                                 .into(profilo);
                     }
                     for(DataSnapshot d:snapshot.getChildren()) {
+                        int i=0;
+                        ArrayList<String> extras=new ArrayList<String>();
                         if(!d.getKey().equals(key)) {
                             if (snapshot.child(d.getKey()).child("nickname").getValue() != null && snapshot.child(d.getKey()).child("numeroDiTelefono").getValue() != null
                                     && snapshot.child(d.getKey()).child("email").getValue()!=null && snapshot.child(d.getKey()).child("foto").getValue()!=null) {
-                                ArrayList<String> extras = new ArrayList<String>();
+                                while (snapshot.child(d.getKey()).child("extras").child(""+i).getValue() != null) {
+                                    extras.add(snapshot.child(d.getKey()).child("extras").child(""+i).getValue().toString());
+                                    i++;
+                                }
                                 contatti.add(new Contatti(snapshot.child(d.getKey()).child("foto").getValue().toString(),snapshot.child(d.getKey()).child("nickname").getValue().toString(), snapshot.child(d.getKey()).child("numeroDiTelefono").getValue().toString(), snapshot.child(d.getKey()).child("email").getValue().toString(), extras));
                             }
                         }

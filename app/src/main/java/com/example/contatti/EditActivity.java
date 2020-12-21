@@ -48,8 +48,9 @@ public class EditActivity extends AppCompatActivity {
     private Contatti c;
     private String nick=null,num=null,mail=null,ph=null;
     private boolean salvato;
-    private EditText nickname,numero,email,extra;
-    private ArrayList<String> extras;
+    private EditText nickname,numero,email;
+    private ArrayList<EditText> extra;
+    private ArrayList<String> extras=new ArrayList<String>();;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,17 +60,22 @@ public class EditActivity extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
         image=findViewById(R.id.edit_image);
         String key=auth.getCurrentUser().getUid();
-        extras=new ArrayList<String>();
+        extra=new ArrayList<EditText>();
         databaseReference= FirebaseDatabase.getInstance().getReference();
         LinearLayout l=findViewById(R.id.layout_edit);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int i=0;
                 if(snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("numeroDiTelefono").getValue()!=null
                         && snapshot.child(key).child("email").getValue()!=null && !salvato) {
                     nickname = aggiungiTextField(l, snapshot.child(key).child("nickname").getValue().toString(), InputType.TYPE_CLASS_TEXT);
                     numero = aggiungiTextField(l, snapshot.child(key).child("numeroDiTelefono").getValue().toString(), InputType.TYPE_CLASS_PHONE);
                     email = aggiungiTextField(l, snapshot.child(key).child("email").getValue().toString(), InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                    while (snapshot.child(key).child("extras").child(""+i).getValue() != null) {
+                        extra.add(aggiungiTextField(l, snapshot.child(key).child("extras").child(""+i).getValue().toString(), InputType.TYPE_CLASS_TEXT));
+                        i++;
+                    }
                 }
                 else if(snapshot.child(key).child("nickname").getValue()==null && snapshot.child(key).child("numeroDiTelefono").getValue()==null
                         && snapshot.child(key).child("email").getValue()==null && !salvato){
@@ -107,8 +113,8 @@ public class EditActivity extends AppCompatActivity {
                 nick=nickname.getText().toString().trim();
                 num=numero.getText().toString().trim();
                 mail=email.getText().toString().trim();
-                if(extra!=null) {
-                    extras.add(extra.getText().toString().trim());
+                for(int i=0;i<extra.size();i++) {
+                    extras.add(extra.get(i).getText().toString().trim());
                 }
                 c = new Contatti(pic,nick, num, mail, extras);
                 databaseReference.child(key).setValue(c, new DatabaseReference.CompletionListener() {
@@ -148,14 +154,14 @@ public class EditActivity extends AppCompatActivity {
         aggiungiEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                extra=aggiungiTextFieldVuoto(l,"Email",InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                extra.add(aggiungiTextFieldVuoto(l,"Email",InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS));
             }
         });
         final Button aggiungiNumero=findViewById(R.id.aggiungi_numero);
         aggiungiNumero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                extra=aggiungiTextFieldVuoto(l,"Numero di telefono",InputType.TYPE_CLASS_PHONE);
+                extra.add(aggiungiTextFieldVuoto(l,"Numero di telefono",InputType.TYPE_CLASS_PHONE));
             }
         });
         final Button indietro=findViewById(R.id.indietro_edit);
