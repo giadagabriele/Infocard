@@ -47,12 +47,14 @@ public class EditActivity extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
     private Contatti c;
     private String nick=null,num=null,mail=null,ph=null;
+    private boolean salvato;
     private EditText nickname,numero,email,extra;
     private ArrayList<String> extras;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+        salvato=false;
         auth=FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         image=findViewById(R.id.edit_image);
@@ -64,12 +66,13 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("numeroDiTelefono").getValue()!=null
-                        && snapshot.child(key).child("email").getValue()!=null) {
+                        && snapshot.child(key).child("email").getValue()!=null && !salvato) {
                     nickname = aggiungiTextField(l, snapshot.child(key).child("nickname").getValue().toString(), InputType.TYPE_CLASS_TEXT);
                     numero = aggiungiTextField(l, snapshot.child(key).child("numeroDiTelefono").getValue().toString(), InputType.TYPE_CLASS_PHONE);
                     email = aggiungiTextField(l, snapshot.child(key).child("email").getValue().toString(), InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 }
-                else{
+                else if(snapshot.child(key).child("nickname").getValue()==null && snapshot.child(key).child("numeroDiTelefono").getValue()==null
+                        && snapshot.child(key).child("email").getValue()==null && !salvato){
                     nickname=aggiungiTextFieldVuoto(l,"Nickname",InputType.TYPE_CLASS_TEXT);
                     numero=aggiungiTextFieldVuoto(l,"Numero di telefono",InputType.TYPE_CLASS_PHONE);
                     email=aggiungiTextField(l, auth.getCurrentUser().getEmail(), InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
@@ -98,15 +101,16 @@ public class EditActivity extends AppCompatActivity {
         salva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                salvato=true;
                 String key=auth.getCurrentUser().getUid();
-                String foto=ph;
+                String pic=ph;
                 nick=nickname.getText().toString().trim();
                 num=numero.getText().toString().trim();
                 mail=email.getText().toString().trim();
                 if(extra!=null) {
                     extras.add(extra.getText().toString().trim());
                 }
-                c = new Contatti(foto,nick, num, mail, extras);
+                c = new Contatti(pic,nick, num, mail, extras);
                 databaseReference.child(key).setValue(c, new DatabaseReference.CompletionListener() {
 
                     @Override
