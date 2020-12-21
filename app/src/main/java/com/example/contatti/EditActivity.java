@@ -46,7 +46,7 @@ public class EditActivity extends AppCompatActivity {
     private ImageView image;
     private static int RESULT_LOAD_IMAGE = 1;
     private Contatti c;
-    private String nick=null,num=null,mail=null;
+    private String nick=null,num=null,mail=null,ph=null;
     private EditText nickname,numero,email,extra;
     private ArrayList<String> extras;
     @Override
@@ -75,6 +75,7 @@ public class EditActivity extends AppCompatActivity {
                     email=aggiungiTextField(l, auth.getCurrentUser().getEmail(), InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 }
                 if(snapshot.child(key).child("foto").getValue()!=null){
+                    ph=snapshot.child(key).child("foto").getValue().toString();
                     Glide.with(getBaseContext())
                             .load(Uri.parse(snapshot.child(key).child("foto").getValue().toString())).apply(RequestOptions.circleCropTransform())
                             .into(image);
@@ -98,13 +99,14 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String key=auth.getCurrentUser().getUid();
+                String foto=ph;
                 nick=nickname.getText().toString().trim();
                 num=numero.getText().toString().trim();
                 mail=email.getText().toString().trim();
                 if(extra!=null) {
                     extras.add(extra.getText().toString().trim());
                 }
-                c = new Contatti(imageUri.toString(),nick, num, mail, extras);
+                c = new Contatti(foto,nick, num, mail, extras);
                 databaseReference.child(key).setValue(c, new DatabaseReference.CompletionListener() {
 
                     @Override

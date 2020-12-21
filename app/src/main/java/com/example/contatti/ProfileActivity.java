@@ -43,6 +43,7 @@ import com.google.firebase.database.ValueEventListener;
                 && snapshot.child(key).child("email").getValue()!=null) {
                     nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
                     numberEditText.setText(snapshot.child(key).child("numeroDiTelefono").getValue().toString());
+                    emailEditText.setText(snapshot.child(key).child("email").getValue().toString());
                 }
                 if(snapshot.child(key).child("foto").getValue()!=null){
                     Glide.with(getBaseContext())
