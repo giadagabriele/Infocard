@@ -11,7 +11,7 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/valori_profilo"
+                android:id="@+id/valori_profiloHome"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -22,7 +22,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/contatto_foto"
+                        android:id="@+id/contattoHome_foto"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginEnd="20dp"
@@ -32,7 +32,7 @@
                         android:src="@mipmap/ic_launcher_round" />
 
                     <TextView
-                        android:id="@+id/contatto_nickname"
+                        android:id="@+id/contattoHome_nickname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -43,7 +43,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/contatto_numeroDiTelefono"
+                    android:id="@+id/contattoHome_numeroDiTelefono"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -52,7 +52,7 @@
                     android:textSize="15sp" />
 
                 <TextView
-                    android:id="@+id/contatto_email"
+                    android:id="@+id/contattoHome_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -65,26 +65,16 @@
 
         </androidx.cardview.widget.CardView>
 
+        <Button
+            android:id="@+id/richiesta_profiloHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:enabled="false"
+            android:text="Invia Richiesta" />
     <Button
-        android:id="@+id/modifica_profilo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
-        android:enabled="true"
-        android:text="@string/edit" />
-
-    <Button
-        android:id="@+id/coda_richieste"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
-        android:enabled="false"
-        android:text="Richieste" />
-
-    <Button
-        android:id="@+id/indietro_profilo"
+        android:id="@+id/indietro_profiloHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"

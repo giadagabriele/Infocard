@@ -8,7 +8,9 @@ class Contatti{
     private String numeroDiTelefono;
     private String email;
     private ArrayList<String> extras;
+    private String UID;
 
+    public String getUID(){return UID;}
     public String getFoto(){return foto;}
     public String getNickname(){return nickname;}
     public String getNumeroDiTelefono(){return numeroDiTelefono;}
@@ -21,6 +23,11 @@ class Contatti{
     public void setEmail(String email){this.email=email;}
     public void setExtras(ArrayList<String> extras){this.extras = extras;}
 
+    public Contatti(String UID,String foto, String nickname) {
+        this.UID=UID;
+        this.foto=foto;
+        this.nickname = nickname;
+    }
     public Contatti(String foto, String nickname, String numeroDiTelefono, String email, ArrayList<String> extras) {
         this.foto=foto;
         this.nickname = nickname;

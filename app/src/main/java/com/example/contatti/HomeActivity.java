@@ -2,6 +2,7 @@ package com.example.contatti;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import android.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,12 +15,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,17 +41,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference databaseReference;
     private HomeAdapter adapter;
     private RecyclerView recyclerView;
+   /* private SearchView searchView;
+    private ListView list;
+    private ArrayList<String> users;
+    private ArrayAdapter<String> arrayAdapter;*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         auth = FirebaseAuth.getInstance();
+        //users=new ArrayList<String>();
         Context context=this;
         databaseReference= FirebaseDatabase.getInstance().getReference();
         if (auth.getCurrentUser() == null) {
@@ -56,8 +68,6 @@ public class HomeActivity extends AppCompatActivity {
             String key=auth.getCurrentUser().getUid();
             final ImageView profilo = findViewById(R.id.profilo);
             final TextView nicknameEditText = findViewById(R.id.home_nickname);
-            final TextView emailEditText = findViewById(R.id.home_email);
-            final TextView numberEditText = findViewById(R.id.home_numeroDiTelefono);
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -67,16 +77,10 @@ public class HomeActivity extends AppCompatActivity {
                                 .into(profilo);
                     }
                     for(DataSnapshot d:snapshot.getChildren()) {
-                        int i=0;
-                        ArrayList<String> extras=new ArrayList<String>();
                         if(!d.getKey().equals(key)) {
-                            if (snapshot.child(d.getKey()).child("nickname").getValue() != null && snapshot.child(d.getKey()).child("numeroDiTelefono").getValue() != null
-                                    && snapshot.child(d.getKey()).child("email").getValue()!=null && snapshot.child(d.getKey()).child("foto").getValue()!=null) {
-                                while (snapshot.child(d.getKey()).child("extras").child(""+i).getValue() != null) {
-                                    extras.add(snapshot.child(d.getKey()).child("extras").child(""+i).getValue().toString());
-                                    i++;
-                                }
-                                contatti.add(new Contatti(snapshot.child(d.getKey()).child("foto").getValue().toString(),snapshot.child(d.getKey()).child("nickname").getValue().toString(), snapshot.child(d.getKey()).child("numeroDiTelefono").getValue().toString(), snapshot.child(d.getKey()).child("email").getValue().toString(), extras));
+                            if (snapshot.child(d.getKey()).child("nickname").getValue() != null && snapshot.child(d.getKey()).child("foto").getValue()!=null) {
+                                //users.add(snapshot.child(d.getKey()).child("nickname").getValue().toString());
+                                contatti.add(new Contatti(d.getKey(),snapshot.child(d.getKey()).child("foto").getValue().toString(),snapshot.child(d.getKey()).child("nickname").getValue().toString()));
                             }
                         }
                     }
@@ -93,6 +97,23 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
 
+            /*SearchView searchView=(SearchView) findViewById(R.id.cerca_home);
+            list=(ListView) findViewById(R.id.lista);
+            arrayAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,users);
+            list.setAdapter(arrayAdapter);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    arrayAdapter.getFilter().filter(newText);
+                    return false;
+                }
+            });*/
+
             profilo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -101,6 +122,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 }
             });
+
             final ImageView logout = findViewById(R.id.esci_home);
             logout.setOnClickListener(new View.OnClickListener() {
 
