@@ -38,10 +38,7 @@ import java.util.ArrayList;
         databaseReference = FirebaseDatabase.getInstance().getReference();
         String key = auth.getCurrentUser().getUid();
         final TextView nicknameEditText = findViewById(R.id.contatto_nickname);
-        final TextView emailEditText = findViewById(R.id.contatto_email);
-        final TextView numberEditText = findViewById(R.id.contatto_numeroDiTelefono);
         final ImageView profilePic=findViewById(R.id.contatto_foto);
-        emailEditText.setText(auth.getCurrentUser().getEmail());
         linearLayout=findViewById(R.id.valori_profilo);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -49,8 +46,8 @@ import java.util.ArrayList;
                 if (snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("numeroDiTelefono").getValue()!=null
                 && snapshot.child(key).child("email").getValue()!=null) {
                     nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
-                    numberEditText.setText(snapshot.child(key).child("numeroDiTelefono").getValue().toString());
-                    emailEditText.setText(snapshot.child(key).child("email").getValue().toString());
+                    linearLayout.addView(createTextView(snapshot.child(key).child("numeroDiTelefono").getValue().toString()));
+                    linearLayout.addView(createTextView(snapshot.child(key).child("email").getValue().toString()));
                     int i=0;
                     ArrayList<String> extras=new ArrayList<String>();
                     while (snapshot.child(key).child("extras").child(""+i).getValue() != null) {
@@ -100,7 +97,7 @@ import java.util.ArrayList;
          t.setText(text);
          LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
          t.setTextSize(15);
-         params.setMargins(38,40,0,0);
+         params.setMargins(20,20,0,20);
          t.setLayoutParams(params);
          return t;
      }

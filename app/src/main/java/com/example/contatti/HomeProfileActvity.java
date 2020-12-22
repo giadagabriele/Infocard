@@ -40,16 +40,14 @@ public class HomeProfileActvity extends AppCompatActivity {
         String key=HomeAdapter.getKeyUID();
         final ImageView profilo = findViewById(R.id.contattoHome_foto);
         final TextView nicknameEditText = findViewById(R.id.contattoHome_nickname);
-        final TextView emailEditText = findViewById(R.id.contattoHome_email);
-        final TextView numberEditText = findViewById(R.id.contattoHome_numeroDiTelefono);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("numeroDiTelefono").getValue()!=null
                         && snapshot.child(key).child("email").getValue()!=null) {
                     nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
-                    numberEditText.setText(snapshot.child(key).child("numeroDiTelefono").getValue().toString());
-                    emailEditText.setText(snapshot.child(key).child("email").getValue().toString());
+                    linearLayout.addView(createTextView(snapshot.child(key).child("numeroDiTelefono").getValue().toString()));
+                    linearLayout.addView(createTextView(snapshot.child(key).child("email").getValue().toString()));
                     int i=0;
                     ArrayList<String> extras=new ArrayList<String>();
                     while (snapshot.child(key).child("extras").child(""+i).getValue() != null) {
@@ -89,7 +87,7 @@ public class HomeProfileActvity extends AppCompatActivity {
         t.setText(text);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         t.setTextSize(15);
-        params.setMargins(38,40,0,40);
+        params.setMargins(20,20,0,20);
         t.setLayoutParams(params);
         return t;
     }
