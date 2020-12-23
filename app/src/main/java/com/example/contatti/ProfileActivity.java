@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
         final TextView nicknameEditText = findViewById(R.id.contatto_nickname);
         final ImageView profilePic=findViewById(R.id.contatto_foto);
         linearLayout=findViewById(R.id.valori_profilo);
+        final Button richieste = findViewById(R.id.coda_richieste);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -66,21 +68,36 @@ import java.util.ArrayList;
                                 .into(profilePic);
                     }
                 }
+
+                for(DataSnapshot d:snapshot.getChildren()) {
+                    if (!d.getKey().equals(key)) {
+                        int i = 0;
+                        ArrayList<String> coda = new ArrayList<String>();
+                        while (snapshot.child(d.getKey()).child("richieste").child("" + i).getValue() != null) {
+                            coda.add(snapshot.child(d.getKey()).child("richieste").child("" + i).getValue().toString());
+                            i++;
+                        }
+                        for(int j=0;j<coda.size();j++){
+                            if(snapshot.child(d.getKey()).child("richieste").child(""+j).getValue()!=null) {
+                                if (snapshot.child(d.getKey()).child("richieste").child("" + j).getValue().toString().equals(key)) {
+                                    richieste.setEnabled(true);
+                                    richieste.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            startActivity(new Intent(getApplicationContext(), RichiesteActivity.class));
+                                            finish();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-
-        final Button indietro = findViewById(R.id.indietro_profilo);
-        indietro.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                finish();
             }
         });
 
@@ -90,6 +107,16 @@ import java.util.ArrayList;
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), EditActivity.class));
+                finish();
+            }
+        });
+
+        final Button indietro = findViewById(R.id.indietro_profilo);
+        indietro.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 finish();
             }
         });

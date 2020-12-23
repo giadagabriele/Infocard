@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -16,17 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.contatti.ui.login.Login;
 
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
-    boolean prima=false;
     static String key;
-    //Contiene gli elementi della cardview
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView photo;
-        TextView nickname,numeroDiTelefono,email;
+        TextView nickname;
         CardView cardView;
         LinearLayout vlayout;
 
@@ -68,7 +65,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 key=contatto.getUID();
-                context.startActivity(new Intent(context.getApplicationContext(), HomeProfileActvity.class));
+                context.startActivity(new Intent(context.getApplicationContext(), HomeProfileActivity.class));
             }
         });
     }

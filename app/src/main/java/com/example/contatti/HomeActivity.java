@@ -67,7 +67,6 @@ public class HomeActivity extends AppCompatActivity {
             ArrayList<Contatti> contatti = new ArrayList<Contatti>();
             String key=auth.getCurrentUser().getUid();
             final ImageView profilo = findViewById(R.id.profilo);
-            final TextView nicknameEditText = findViewById(R.id.home_nickname);
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
