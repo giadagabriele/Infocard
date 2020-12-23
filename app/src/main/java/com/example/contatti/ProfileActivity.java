@@ -29,6 +29,7 @@ import java.util.ArrayList;
     private FirebaseAuth auth;
     private DatabaseReference databaseReference;
     private LinearLayout linearLayout;
+    private boolean immagine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ import java.util.ArrayList;
         setContentView(R.layout.activity_profile);
         databaseReference = FirebaseDatabase.getInstance().getReference();
         String key = auth.getCurrentUser().getUid();
+        immagine=false;
         final TextView nicknameEditText = findViewById(R.id.contatto_nickname);
         final ImageView profilePic=findViewById(R.id.contatto_foto);
         linearLayout=findViewById(R.id.valori_profilo);
@@ -44,7 +46,7 @@ import java.util.ArrayList;
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("numeroDiTelefono").getValue()!=null
-                && snapshot.child(key).child("email").getValue()!=null) {
+                && snapshot.child(key).child("email").getValue()!=null && !immagine) {
                     nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
                     linearLayout.addView(createTextView(snapshot.child(key).child("numeroDiTelefono").getValue().toString()));
                     linearLayout.addView(createTextView(snapshot.child(key).child("email").getValue().toString()));
@@ -57,11 +59,12 @@ import java.util.ArrayList;
                     for(int j=0;j<extras.size();j++) {
                         linearLayout.addView(createTextView(extras.get(j)));
                     }
-                }
-                if(snapshot.child(key).child("foto").getValue()!=null){
-                    Glide.with(getBaseContext())
-                            .load(Uri.parse(snapshot.child(key).child("foto").getValue().toString())).apply(RequestOptions.circleCropTransform())
-                            .into(profilePic);
+                    if(snapshot.child(key).child("foto").getValue()!=null) {
+                        immagine=true;
+                        Glide.with(getBaseContext())
+                                .load(Uri.parse(snapshot.child(key).child("foto").getValue().toString())).apply(RequestOptions.circleCropTransform())
+                                .into(profilePic);
+                    }
                 }
             }
 

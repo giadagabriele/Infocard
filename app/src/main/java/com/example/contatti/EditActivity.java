@@ -121,8 +121,8 @@ public class EditActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                        finish();
+                        //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                        //finish();
                         Toast.makeText(EditActivity.this, "MODIFICA SALVATA", Toast.LENGTH_SHORT).show();
                     }
                 });
