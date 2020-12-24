@@ -31,6 +31,8 @@ public class RichiesteActivity extends AppCompatActivity {
     private RichiesteAdapter adapter;
     private RecyclerView recyclerView;
     static ArrayList<String> codaAccettate=new ArrayList<String>();
+    static ArrayList<String> codaRifiutate=new ArrayList<String>();
+    private boolean ok;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,12 +40,23 @@ public class RichiesteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_richieste);
         auth=FirebaseAuth.getInstance();
         Context context=this;
+        ok=true;
         String key=auth.getCurrentUser().getUid();
-        ArrayList<Contatti> contatti = new ArrayList<Contatti>();
+        ArrayList<Contatti> contatti_richieste = new ArrayList<Contatti>();
         databaseReference= FirebaseDatabase.getInstance().getReference();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int p=0;
+                while (snapshot.child(key).child("accettate").child("" + p).getValue() != null) {
+                    codaAccettate.add(snapshot.child(key).child("accettate").child("" + p).getValue().toString());
+                    p++;
+                }
+                int q=0;
+                while (snapshot.child(key).child("rifiutate").child("" + q).getValue() != null) {
+                    codaRifiutate.add(snapshot.child(key).child("rifiutate").child("" + q).getValue().toString());
+                    q++;
+                }
                 for(DataSnapshot d:snapshot.getChildren()) {
                     if (!d.getKey().equals(key)) {
                         int i=0;
@@ -57,18 +70,21 @@ public class RichiesteActivity extends AppCompatActivity {
                                 if (snapshot.child(d.getKey()).child("richieste").child("" + j).getValue().toString().equals(key)) {
                                     if (snapshot.child(d.getKey()).child("foto").getValue() != null
                                             && snapshot.child(d.getKey()).child("nickname").getValue() != null) {
-                                        contatti.add(new Contatti(d.getKey(),snapshot.child(d.getKey()).child("foto").getValue().toString(),snapshot.child(d.getKey()).child("nickname").getValue().toString()));
+                                        contatti_richieste.add(new Contatti(d.getKey(),snapshot.child(d.getKey()).child("foto").getValue().toString(),snapshot.child(d.getKey()).child("nickname").getValue().toString()));
                                     }
                                 }
                             }
                         }
                     }
                 }
-                recyclerView = findViewById(R.id.recycler_richieste);
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                recyclerView.setHasFixedSize(true);
-                adapter = new RichiesteAdapter(context, contatti);
-                recyclerView.setAdapter(adapter);
+                if(ok) {
+                    ok=false;
+                    recyclerView = findViewById(R.id.recycler_richieste);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    recyclerView.setHasFixedSize(true);
+                    adapter = new RichiesteAdapter(context, contatti_richieste);
+                    recyclerView.setAdapter(adapter);
+                }
             }
 
             @Override

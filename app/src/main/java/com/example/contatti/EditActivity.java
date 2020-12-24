@@ -88,6 +88,7 @@ public class EditActivity extends AppCompatActivity {
                     Glide.with(getBaseContext())
                             .load(Uri.parse(snapshot.child(key).child("foto").getValue().toString())).apply(RequestOptions.circleCropTransform())
                             .into(image);
+
                 }
             }
 
@@ -103,6 +104,7 @@ public class EditActivity extends AppCompatActivity {
             }
 
         });
+
         final Button salva=findViewById(R.id.salva_edit);
         salva.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,35 +118,16 @@ public class EditActivity extends AppCompatActivity {
                 for(int i=0;i<extra.size();i++) {
                     extras.add(extra.get(i).getText().toString().trim());
                 }
+
                 c = new Contatti(pic,nick, num, mail, extras);
                 databaseReference.child(key).setValue(c, new DatabaseReference.CompletionListener() {
 
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                        //startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
-                        //finish();
-                        Toast.makeText(EditActivity.this, "MODIFICA SALVATA", Toast.LENGTH_SHORT).show();
+
                     }
                 });
-                StorageReference riversRef = mStorageRef.child(key).child("foto");
-                if(imageUri!=null) {
-                    riversRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    databaseReference.child(key).child("foto").setValue(uri.toString());
-                                }
-                            });
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                        }
-                    });
-                }
+                Toast.makeText(EditActivity.this, "MODIFICA SALVATA", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -206,6 +189,25 @@ public class EditActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == RESULT_LOAD_IMAGE){
             imageUri = data.getData();
             image.setImageURI(imageUri);
+        }
+        StorageReference riversRef = mStorageRef.child(auth.getCurrentUser().getUid()).child("foto");
+        if(imageUri!=null) {
+            riversRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            databaseReference.child(auth.getCurrentUser().getUid()).child("foto").setValue(uri.toString());
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
         }
     }
 }

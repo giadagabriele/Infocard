@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 
 public class HomeProfileActivity extends AppCompatActivity {
     private FirebaseAuth auth;
@@ -61,6 +62,7 @@ public class HomeProfileActivity extends AppCompatActivity {
                                 if(auth.getCurrentUser().getUid().equals(coda) && key.equals(d.getKey()) && !trovato) {
                                     trovato=true;
                                     richieste.setEnabled(false);
+
                                     if (snapshot.child(key).child("numeroDiTelefono").getValue() != null
                                             && snapshot.child(key).child("email").getValue() != null) {
                                         linearLayout.addView(createTextView(snapshot.child(key).child("numeroDiTelefono").getValue().toString()));
