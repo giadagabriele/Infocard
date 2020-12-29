@@ -47,6 +47,8 @@ public class RichiesteActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                codaAccettate.clear();
+                codaRifiutate.clear();
                 int p=0;
                 while (snapshot.child(key).child("accettate").child("" + p).getValue() != null) {
                     codaAccettate.add(snapshot.child(key).child("accettate").child("" + p).getValue().toString());

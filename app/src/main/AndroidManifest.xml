@@ -14,6 +14,7 @@
         <activity android:name=".EditActivity" />
         <activity android:name=".HomeProfileActivity"></activity>
         <activity android:name=".RichiesteActivity"></activity>
+        <activity android:name=".SearchProfileActivity"></activity>
         <activity
             android:name=".ui.login.Login"
             android:label="@string/title_activity_login" />

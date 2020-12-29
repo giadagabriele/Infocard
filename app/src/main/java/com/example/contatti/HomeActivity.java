@@ -48,16 +48,17 @@ public class HomeActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private HomeAdapter adapter;
     private RecyclerView recyclerView;
-   /* private SearchView searchView;
+    private SearchView searchView;
     private ListView list;
     private ArrayList<String> users;
-    private ArrayAdapter<String> arrayAdapter;*/
+    static String nickname_clicked;
+    private ArrayAdapter<String> arrayAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         auth = FirebaseAuth.getInstance();
-        //users=new ArrayList<String>();
+        users=new ArrayList<String>();
         Context context=this;
         databaseReference= FirebaseDatabase.getInstance().getReference();
         if (auth.getCurrentUser() == null) {
@@ -75,14 +76,33 @@ public class HomeActivity extends AppCompatActivity {
                                 .load(Uri.parse(snapshot.child(key).child("foto").getValue().toString())).apply(RequestOptions.circleCropTransform())
                                 .into(profilo);
                     }
+                    int j=0;
+                    ArrayList<String> coda=new ArrayList<String>();
                     for(DataSnapshot d:snapshot.getChildren()) {
-                        if(!d.getKey().equals(key)) {
-                            if (snapshot.child(d.getKey()).child("nickname").getValue() != null && snapshot.child(d.getKey()).child("foto").getValue()!=null) {
-                                //users.add(snapshot.child(d.getKey()).child("nickname").getValue().toString());
-                                contatti.add(new Contatti(d.getKey(),snapshot.child(d.getKey()).child("foto").getValue().toString(),snapshot.child(d.getKey()).child("nickname").getValue().toString()));
+                        if (!d.getKey().equals(key)) {
+                            while (snapshot.child(d.getKey()).child("accettate").child("" + j).getValue() != null) {
+                                if(snapshot.child(d.getKey()).child("accettate").child("" + j).getValue().toString().equals(key)) {
+                                    coda.add(d.getKey());
+                                }
+                                j++;
                             }
                         }
                     }
+                    for(int i=0;i<coda.size();i++){
+                        if (snapshot.child(coda.get(i)).child("nickname").getValue() != null
+                                && snapshot.child(coda.get(i)).child("foto").getValue()!=null) {
+                            contatti.add(new Contatti(coda.get(i),snapshot.child(coda.get(i)).child("foto").getValue().toString(),snapshot.child(coda.get(i)).child("nickname").getValue().toString()));
+                        }
+                    }
+
+                    for(DataSnapshot d:snapshot.getChildren()) {
+                        if(!d.getKey().equals(key)) {
+                            if (snapshot.child(d.getKey()).child("nickname").getValue() != null && snapshot.child(d.getKey()).child("foto").getValue()!=null) {
+                                users.add(snapshot.child(d.getKey()).child("nickname").getValue().toString());
+                            }
+                        }
+                    }
+
                     recyclerView = findViewById(R.id.recycler);
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     recyclerView.setHasFixedSize(true);
@@ -96,7 +116,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
 
-            /*SearchView searchView=(SearchView) findViewById(R.id.cerca_home);
+            SearchView searchView=(SearchView) findViewById(R.id.cerca_home);
             list=(ListView) findViewById(R.id.lista);
             arrayAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,users);
             list.setAdapter(arrayAdapter);
@@ -111,7 +131,14 @@ public class HomeActivity extends AppCompatActivity {
                     arrayAdapter.getFilter().filter(newText);
                     return false;
                 }
-            });*/
+            });
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    nickname_clicked=parent.getItemAtPosition(position).toString();
+                    startActivity(new Intent(getApplicationContext(), SearchProfileActivity.class));
+                }
+            });
 
             profilo.setOnClickListener(new View.OnClickListener() {
                 @Override

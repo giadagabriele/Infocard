@@ -24,28 +24,34 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.EventListener;
 
-public class HomeProfileActivity extends AppCompatActivity {
+public class SearchProfileActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference databaseReference;
     private LinearLayout linearLayout;
     private boolean trovato;
+    private String key;
+    static ArrayList<String> codaRichieste=new ArrayList<String>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_home);
+        setContentView(R.layout.activity_profile_search);
         auth = FirebaseAuth.getInstance();
         databaseReference= FirebaseDatabase.getInstance().getReference();
-        linearLayout=findViewById(R.id.valori_profiloHome);
-        String key=HomeAdapter.getKeyUID();
+        linearLayout=findViewById(R.id.valori_profiloSearch);
         trovato=false;
-        final ImageView profilo = findViewById(R.id.contattoHome_foto);
-        final TextView nicknameEditText = findViewById(R.id.contattoHome_nickname);
+        final Button richieste=findViewById(R.id.richiesta_profiloSearch);
+        final ImageView profilo = findViewById(R.id.contattoSearch_foto);
+        final TextView nicknameEditText = findViewById(R.id.contattoSearch_nickname);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot d:snapshot.getChildren()) {
+                    if(snapshot.child(d.getKey()).child("nickname").getValue().toString().equals(HomeActivity.nickname_clicked)) {
+                        key=d.getKey();
+                    }
+                }
                 if (snapshot.child(key).child("nickname").getValue() != null && snapshot.child(key).child("foto").getValue() != null) {
                     nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
                     Glide.with(getBaseContext())
@@ -59,6 +65,7 @@ public class HomeProfileActivity extends AppCompatActivity {
                                 coda=snapshot.child(d.getKey()).child("accettate").child("" + i).getValue().toString();
                                 if(auth.getCurrentUser().getUid().equals(coda) && key.equals(d.getKey()) && !trovato) {
                                     trovato=true;
+                                    richieste.setEnabled(false);
 
                                     if (snapshot.child(key).child("nome").getValue()!=null && snapshot.child(key).child("cognome").getValue()!=null
                                             && snapshot.child(key).child("numeroDiTelefono").getValue() != null
@@ -90,7 +97,16 @@ public class HomeProfileActivity extends AppCompatActivity {
             }
         });
 
-        final Button indietro = findViewById(R.id.indietro_profiloHome);
+        richieste.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(SearchProfileActivity.this, "Richiesta inviata", Toast.LENGTH_SHORT).show();
+                codaRichieste.add(key);
+                databaseReference.child(auth.getCurrentUser().getUid()).child("richieste").setValue(codaRichieste);
+            }
+        });
+
+        final Button indietro = findViewById(R.id.indietro_profiloSearch);
         indietro.setOnClickListener(new View.OnClickListener() {
 
             @Override

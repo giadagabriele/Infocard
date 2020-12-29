@@ -115,15 +115,6 @@ public class RichiesteAdapter extends RecyclerView.Adapter<RichiesteAdapter.View
             public void onClick(View v) {
                 Toast.makeText(context, "RICHIESTA RIFIUTATA", Toast.LENGTH_SHORT).show();
                 RichiesteActivity.codaRifiutate.add(contatto.getUID());
-                for(int i=0;i<RichiesteActivity.codaRifiutate.size();i++){
-                    for(int j=0;j<RichiesteActivity.codaRifiutate.size();j++){
-                        if(i!=j) {
-                            if (RichiesteActivity.codaRifiutate.get(i).equals(RichiesteActivity.codaRifiutate.get(j))){
-                                RichiesteActivity.codaRifiutate.remove(RichiesteActivity.codaRifiutate.get(j));
-                            }
-                        }
-                    }
-                }
                 databaseReference.child(auth.getCurrentUser().getUid()).child("rifiutate").setValue(RichiesteActivity.codaRifiutate);
             }
         });

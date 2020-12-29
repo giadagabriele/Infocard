@@ -47,9 +47,11 @@ import java.util.ArrayList;
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("numeroDiTelefono").getValue()!=null
-                && snapshot.child(key).child("email").getValue()!=null && !immagine) {
+                if (snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("nome").getValue()!=null
+                        && snapshot.child(key).child("cognome").getValue()!=null && snapshot.child(key).child("numeroDiTelefono").getValue()!=null
+                        && snapshot.child(key).child("email").getValue()!=null && !immagine) {
                     nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
+                    linearLayout.addView(createTextView(snapshot.child(key).child("nome").getValue().toString()+" "+snapshot.child(key).child("cognome").getValue().toString()));
                     linearLayout.addView(createTextView(snapshot.child(key).child("numeroDiTelefono").getValue().toString()));
                     linearLayout.addView(createTextView(snapshot.child(key).child("email").getValue().toString()));
                     int i=0;

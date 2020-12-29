@@ -46,9 +46,9 @@ public class EditActivity extends AppCompatActivity {
     private ImageView image;
     private static int RESULT_LOAD_IMAGE = 1;
     private Contatti c;
-    private String nick=null,num=null,mail=null,ph=null;
+    private String nick=null,nom=null,cogn=null,num=null,mail=null,ph=null;
     private boolean salvato;
-    private EditText nickname,numero,email;
+    private EditText nickname,nome, cognome,numero,email;
     private ArrayList<EditText> extra;
     private ArrayList<String> extras=new ArrayList<String>();;
     @Override
@@ -67,9 +67,13 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int i=0;
-                if(snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("numeroDiTelefono").getValue()!=null
+                if(snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("nome").getValue()!=null
+                        && snapshot.child(key).child("cognome").getValue()!=null
+                        && snapshot.child(key).child("numeroDiTelefono").getValue()!=null
                         && snapshot.child(key).child("email").getValue()!=null && !salvato) {
                     nickname = aggiungiTextField(l, snapshot.child(key).child("nickname").getValue().toString(), InputType.TYPE_CLASS_TEXT);
+                    nome = aggiungiTextField(l, snapshot.child(key).child("nome").getValue().toString(), InputType.TYPE_CLASS_TEXT);
+                    cognome = aggiungiTextField(l, snapshot.child(key).child("cognome").getValue().toString(), InputType.TYPE_CLASS_TEXT);
                     numero = aggiungiTextField(l, snapshot.child(key).child("numeroDiTelefono").getValue().toString(), InputType.TYPE_CLASS_PHONE);
                     email = aggiungiTextField(l, snapshot.child(key).child("email").getValue().toString(), InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                     while (snapshot.child(key).child("extras").child(""+i).getValue() != null) {
@@ -77,9 +81,13 @@ public class EditActivity extends AppCompatActivity {
                         i++;
                     }
                 }
-                else if(snapshot.child(key).child("nickname").getValue()==null && snapshot.child(key).child("numeroDiTelefono").getValue()==null
+                else if(snapshot.child(key).child("nickname").getValue()==null && snapshot.child(key).child("nome").getValue()==null
+                        && snapshot.child(key).child("cognome").getValue()==null
+                        && snapshot.child(key).child("numeroDiTelefono").getValue()==null
                         && snapshot.child(key).child("email").getValue()==null && !salvato){
                     nickname=aggiungiTextFieldVuoto(l,"Nickname",InputType.TYPE_CLASS_TEXT);
+                    nome=aggiungiTextFieldVuoto(l,"Nome",InputType.TYPE_CLASS_TEXT);
+                    cognome=aggiungiTextFieldVuoto(l,"Cognome",InputType.TYPE_CLASS_TEXT);
                     numero=aggiungiTextFieldVuoto(l,"Numero di telefono",InputType.TYPE_CLASS_PHONE);
                     email=aggiungiTextField(l, auth.getCurrentUser().getEmail(), InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 }
@@ -113,13 +121,15 @@ public class EditActivity extends AppCompatActivity {
                 String key=auth.getCurrentUser().getUid();
                 String pic=ph;
                 nick=nickname.getText().toString().trim();
+                nom=nome.getText().toString().trim();
+                cogn=cognome.getText().toString().trim();
                 num=numero.getText().toString().trim();
                 mail=email.getText().toString().trim();
                 for(int i=0;i<extra.size();i++) {
                     extras.add(extra.get(i).getText().toString().trim());
                 }
 
-                c = new Contatti(pic,nick, num, mail, extras);
+                c = new Contatti(pic, nick, nom, cogn, num, mail, extras);
                 databaseReference.child(key).setValue(c, new DatabaseReference.CompletionListener() {
 
                     @Override
