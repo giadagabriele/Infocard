@@ -47,9 +47,10 @@ public class SearchProfileActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot d:snapshot.getChildren()) {
-                    if(snapshot.child(d.getKey()).child("nickname").getValue().toString().equals(HomeActivity.nickname_clicked)) {
-                        key=d.getKey();
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    if (snapshot.child(d.getKey()).child("nickname").getValue().toString().equals(HomeActivity.nickname_clicked)) {
+                        key = d.getKey();
+                        Toast.makeText(SearchProfileActivity.this, key, Toast.LENGTH_SHORT).show();
                     }
                 }
                 if (snapshot.child(key).child("nickname").getValue() != null && snapshot.child(key).child("foto").getValue() != null) {
@@ -57,34 +58,37 @@ public class SearchProfileActivity extends AppCompatActivity {
                     Glide.with(getBaseContext())
                             .load(Uri.parse(snapshot.child(key).child("foto").getValue().toString())).apply(RequestOptions.circleCropTransform())
                             .into(profilo);
-                    String coda;
-                    for(DataSnapshot d:snapshot.getChildren()) {
-                        if (!d.getKey().equals(auth.getCurrentUser().getUid())) {
-                            int i = 0;
-                            while (snapshot.child(d.getKey()).child("accettate").child("" + i).getValue() != null) {
-                                coda=snapshot.child(d.getKey()).child("accettate").child("" + i).getValue().toString();
-                                if(auth.getCurrentUser().getUid().equals(coda) && key.equals(d.getKey()) && !trovato) {
-                                    trovato=true;
-                                    richieste.setEnabled(false);
+                }
+                ArrayList<String> coda=new ArrayList<String>();
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    if (!d.getKey().equals(auth.getCurrentUser().getUid())) {
+                        int i = 0;
+                        while (snapshot.child(d.getKey()).child("accettate").child("" + i).getValue() != null) {
+                            if (snapshot.child(d.getKey()).child("accettate").child("" + i).getValue().toString().equals(auth.getCurrentUser().getUid()))
+                                coda.add(d.getKey());
+                            i++;
+                        }
+                    }
+                }
+                for(int j=0;j<coda.size();j++) {
+                    if (key.equals(coda.get(j)) && !trovato) {
+                        trovato = true;
+                        richieste.setEnabled(false);
 
-                                    if (snapshot.child(key).child("nome").getValue()!=null && snapshot.child(key).child("cognome").getValue()!=null
-                                            && snapshot.child(key).child("numeroDiTelefono").getValue() != null
-                                            && snapshot.child(key).child("email").getValue() != null ) {
-                                        linearLayout.addView(createTextView(snapshot.child(key).child("nome").getValue().toString()+" "+snapshot.child(key).child("cognome").getValue().toString()));
-                                        linearLayout.addView(createTextView(snapshot.child(key).child("numeroDiTelefono").getValue().toString()));
-                                        linearLayout.addView(createTextView(snapshot.child(key).child("email").getValue().toString()));
-                                        int h = 0;
-                                        ArrayList<String> extras = new ArrayList<String>();
-                                        while (snapshot.child(key).child("extras").child("" + h).getValue() != null) {
-                                            extras.add(snapshot.child(key).child("extras").child("" + h).getValue().toString());
-                                            h++;
-                                        }
-                                        for (int k = 0; k < extras.size(); k++) {
-                                            linearLayout.addView(createTextView(extras.get(k)));
-                                        }
-                                    }
-                                }
-                                i++;
+                        if (snapshot.child(key).child("nome").getValue() != null && snapshot.child(key).child("cognome").getValue() != null
+                                && snapshot.child(key).child("numeroDiTelefono").getValue() != null
+                                && snapshot.child(key).child("email").getValue() != null) {
+                            linearLayout.addView(createTextView(snapshot.child(key).child("nome").getValue().toString() + " " + snapshot.child(key).child("cognome").getValue().toString()));
+                            linearLayout.addView(createTextView(snapshot.child(key).child("numeroDiTelefono").getValue().toString()));
+                            linearLayout.addView(createTextView(snapshot.child(key).child("email").getValue().toString()));
+                            int h = 0;
+                            ArrayList<String> extras = new ArrayList<String>();
+                            while (snapshot.child(key).child("extras").child("" + h).getValue() != null) {
+                                extras.add(snapshot.child(key).child("extras").child("" + h).getValue().toString());
+                                h++;
+                            }
+                            for (int k = 0; k < extras.size(); k++) {
+                                linearLayout.addView(createTextView(extras.get(k)));
                             }
                         }
                     }

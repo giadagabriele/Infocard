@@ -47,9 +47,13 @@ import java.util.ArrayList;
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("nome").getValue()!=null
+                if (snapshot.child(key).child("foto").getValue()!=null && snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("nome").getValue()!=null
                         && snapshot.child(key).child("cognome").getValue()!=null && snapshot.child(key).child("numeroDiTelefono").getValue()!=null
                         && snapshot.child(key).child("email").getValue()!=null && !immagine) {
+                        immagine=true;
+                    Glide.with(getBaseContext())
+                            .load(Uri.parse(snapshot.child(key).child("foto").getValue().toString())).apply(RequestOptions.circleCropTransform())
+                            .into(profilePic);
                     nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
                     linearLayout.addView(createTextView(snapshot.child(key).child("nome").getValue().toString()+" "+snapshot.child(key).child("cognome").getValue().toString()));
                     linearLayout.addView(createTextView(snapshot.child(key).child("numeroDiTelefono").getValue().toString()));
@@ -63,17 +67,11 @@ import java.util.ArrayList;
                     for(int j=0;j<extras.size();j++) {
                         linearLayout.addView(createTextView(extras.get(j)));
                     }
-                    if(snapshot.child(key).child("foto").getValue()!=null) {
-                        immagine=true;
-                        Glide.with(getBaseContext())
-                                .load(Uri.parse(snapshot.child(key).child("foto").getValue().toString())).apply(RequestOptions.circleCropTransform())
-                                .into(profilePic);
-                    }
                 }
 
                 for(DataSnapshot d:snapshot.getChildren()) {
+                    int i = 0;
                     if (!d.getKey().equals(key)) {
-                        int i = 0;
                         ArrayList<String> coda = new ArrayList<String>();
                         while (snapshot.child(d.getKey()).child("richieste").child("" + i).getValue() != null) {
                             coda.add(snapshot.child(d.getKey()).child("richieste").child("" + i).getValue().toString());

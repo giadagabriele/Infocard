@@ -76,15 +76,15 @@ public class HomeActivity extends AppCompatActivity {
                                 .load(Uri.parse(snapshot.child(key).child("foto").getValue().toString())).apply(RequestOptions.circleCropTransform())
                                 .into(profilo);
                     }
-                    int j=0;
                     ArrayList<String> coda=new ArrayList<String>();
                     for(DataSnapshot d:snapshot.getChildren()) {
+                        int j=0;
                         if (!d.getKey().equals(key)) {
                             while (snapshot.child(d.getKey()).child("accettate").child("" + j).getValue() != null) {
-                                if(snapshot.child(d.getKey()).child("accettate").child("" + j).getValue().toString().equals(key)) {
+                                 if(snapshot.child(d.getKey()).child("accettate").child("" + j).getValue().toString().equals(key)){
                                     coda.add(d.getKey());
+                                    j++;
                                 }
-                                j++;
                             }
                         }
                     }
@@ -102,7 +102,6 @@ public class HomeActivity extends AppCompatActivity {
                             }
                         }
                     }
-
                     recyclerView = findViewById(R.id.recycler);
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     recyclerView.setHasFixedSize(true);

@@ -66,37 +66,48 @@ public class EditActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int i=0;
-                if(snapshot.child(key).child("nickname").getValue()!=null && snapshot.child(key).child("nome").getValue()!=null
-                        && snapshot.child(key).child("cognome").getValue()!=null
-                        && snapshot.child(key).child("numeroDiTelefono").getValue()!=null
-                        && snapshot.child(key).child("email").getValue()!=null && !salvato) {
-                    nickname = aggiungiTextField(l, snapshot.child(key).child("nickname").getValue().toString(), InputType.TYPE_CLASS_TEXT);
-                    nome = aggiungiTextField(l, snapshot.child(key).child("nome").getValue().toString(), InputType.TYPE_CLASS_TEXT);
-                    cognome = aggiungiTextField(l, snapshot.child(key).child("cognome").getValue().toString(), InputType.TYPE_CLASS_TEXT);
-                    numero = aggiungiTextField(l, snapshot.child(key).child("numeroDiTelefono").getValue().toString(), InputType.TYPE_CLASS_PHONE);
-                    email = aggiungiTextField(l, snapshot.child(key).child("email").getValue().toString(), InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                    while (snapshot.child(key).child("extras").child(""+i).getValue() != null) {
-                        extra.add(aggiungiTextField(l, snapshot.child(key).child("extras").child(""+i).getValue().toString(), InputType.TYPE_CLASS_TEXT));
-                        i++;
-                    }
-                }
-                else if(snapshot.child(key).child("nickname").getValue()==null && snapshot.child(key).child("nome").getValue()==null
-                        && snapshot.child(key).child("cognome").getValue()==null
-                        && snapshot.child(key).child("numeroDiTelefono").getValue()==null
-                        && snapshot.child(key).child("email").getValue()==null && !salvato){
-                    nickname=aggiungiTextFieldVuoto(l,"Nickname",InputType.TYPE_CLASS_TEXT);
-                    nome=aggiungiTextFieldVuoto(l,"Nome",InputType.TYPE_CLASS_TEXT);
-                    cognome=aggiungiTextFieldVuoto(l,"Cognome",InputType.TYPE_CLASS_TEXT);
-                    numero=aggiungiTextFieldVuoto(l,"Numero di telefono",InputType.TYPE_CLASS_PHONE);
-                    email=aggiungiTextField(l, auth.getCurrentUser().getEmail(), InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                }
                 if(snapshot.child(key).child("foto").getValue()!=null){
                     ph=snapshot.child(key).child("foto").getValue().toString();
                     Glide.with(getBaseContext())
                             .load(Uri.parse(snapshot.child(key).child("foto").getValue().toString())).apply(RequestOptions.circleCropTransform())
                             .into(image);
-
+                }
+                if(!salvato) {
+                    if (snapshot.child(key).child("nickname").getValue() != null) {
+                        nickname = aggiungiTextField(l, snapshot.child(key).child("nickname").getValue().toString(), InputType.TYPE_CLASS_TEXT);
+                    }
+                    else{
+                        nickname=aggiungiTextFieldVuoto(l,"Nickname",InputType.TYPE_CLASS_TEXT);
+                    }
+                    if (snapshot.child(key).child("nome").getValue() != null) {
+                        nome = aggiungiTextField(l, snapshot.child(key).child("nome").getValue().toString(), InputType.TYPE_CLASS_TEXT);
+                    }
+                    else{
+                        nome=aggiungiTextFieldVuoto(l,"Nome",InputType.TYPE_CLASS_TEXT);
+                    }
+                    if (snapshot.child(key).child("cognome").getValue() != null) {
+                        cognome = aggiungiTextField(l, snapshot.child(key).child("cognome").getValue().toString(), InputType.TYPE_CLASS_TEXT);
+                    }
+                    else{
+                        cognome=aggiungiTextFieldVuoto(l,"Cognome",InputType.TYPE_CLASS_TEXT);
+                    }
+                    if (snapshot.child(key).child("numeroDiTelefono").getValue() != null) {
+                        numero = aggiungiTextField(l, snapshot.child(key).child("numeroDiTelefono").getValue().toString(), InputType.TYPE_CLASS_PHONE);
+                    }
+                    else{
+                        numero=aggiungiTextFieldVuoto(l,"Numero di telefono",InputType.TYPE_CLASS_PHONE);
+                    }
+                    if (snapshot.child(key).child("email").getValue() != null) {
+                        email = aggiungiTextField(l, snapshot.child(key).child("email").getValue().toString(), InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                    }
+                    else{
+                        email=aggiungiTextField(l, auth.getCurrentUser().getEmail(), InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                    }
+                    int i = 0;
+                    while (snapshot.child(key).child("extras").child("" + i).getValue() != null) {
+                        extra.add(aggiungiTextField(l, snapshot.child(key).child("extras").child("" + i).getValue().toString(), InputType.TYPE_CLASS_TEXT));
+                        i++;
+                    }
                 }
             }
 
@@ -128,7 +139,6 @@ public class EditActivity extends AppCompatActivity {
                 for(int i=0;i<extra.size();i++) {
                     extras.add(extra.get(i).getText().toString().trim());
                 }
-
                 c = new Contatti(pic, nick, nom, cogn, num, mail, extras);
                 databaseReference.child(key).setValue(c, new DatabaseReference.CompletionListener() {
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Get Contact</string>
+    <string name="app_name">BusinessCard</string>
     <string name="title_activity_login">Accedi</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

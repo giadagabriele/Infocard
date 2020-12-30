@@ -19,7 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
-    static String key;
+    private static String key_HomeAdapter;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView photo;
@@ -64,7 +64,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                key=contatto.getUID();
+                key_HomeAdapter=contatto.getUID();
                 context.startActivity(new Intent(context.getApplicationContext(), HomeProfileActivity.class));
             }
         });
@@ -75,6 +75,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         return contatti.size();
     }
     public static String getKeyUID(){
-        return key;
+        return key_HomeAdapter;
     }
 }

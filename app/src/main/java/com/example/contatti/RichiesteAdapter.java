@@ -47,6 +47,7 @@ public class RichiesteAdapter extends RecyclerView.Adapter<RichiesteAdapter.View
     private List<Contatti> contatti;
     private LayoutInflater inflater;
     private Context context;
+    private boolean ok_,okk_;
 
     RichiesteAdapter(Context context, List<Contatti> data) {
         this.context = context;
@@ -54,6 +55,8 @@ public class RichiesteAdapter extends RecyclerView.Adapter<RichiesteAdapter.View
         this.contatti = data;
         auth=FirebaseAuth.getInstance();
         databaseReference= FirebaseDatabase.getInstance().getReference();
+        ok_=true;
+        okk_=true;
     }
 
 
@@ -63,7 +66,7 @@ public class RichiesteAdapter extends RecyclerView.Adapter<RichiesteAdapter.View
         View view = inflater.inflate(R.layout.activity_coda_richieste, parent, false);
         return new RichiesteAdapter.ViewHolder(view);
     }
-
+    
     @Override
     public void onBindViewHolder(@NonNull RichiesteAdapter.ViewHolder holder, int position) {
         Contatti contatto = contatti.get(position);
@@ -96,26 +99,23 @@ public class RichiesteAdapter extends RecyclerView.Adapter<RichiesteAdapter.View
         holder.accetta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "RICHIESTA ACCETTATA", Toast.LENGTH_SHORT).show();
-                RichiesteActivity.codaAccettate.add(contatto.getUID());
-                for(int i=0;i<RichiesteActivity.codaAccettate.size();i++){
-                    for(int j=0;j<RichiesteActivity.codaAccettate.size();j++){
-                        if(i!=j) {
-                            if (RichiesteActivity.codaAccettate.get(i).equals(RichiesteActivity.codaAccettate.get(j))){
-                                RichiesteActivity.codaAccettate.remove(RichiesteActivity.codaAccettate.get(j));
-                            }
-                        }
-                    }
+                if(ok_) {
+                    ok_ = false;
+                    Toast.makeText(context, "RICHIESTA ACCETTATA", Toast.LENGTH_SHORT).show();
+                    RichiesteActivity.codaAccettate.add(contatto.getUID());
+                    databaseReference.child(auth.getCurrentUser().getUid()).child("accettate").setValue(RichiesteActivity.codaAccettate);
                 }
-                databaseReference.child(auth.getCurrentUser().getUid()).child("accettate").setValue(RichiesteActivity.codaAccettate);
             }
         });
         holder.rifiuta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "RICHIESTA RIFIUTATA", Toast.LENGTH_SHORT).show();
-                RichiesteActivity.codaRifiutate.add(contatto.getUID());
-                databaseReference.child(auth.getCurrentUser().getUid()).child("rifiutate").setValue(RichiesteActivity.codaRifiutate);
+                if(okk_) {
+                    okk_=false;
+                    Toast.makeText(context, "RICHIESTA RIFIUTATA", Toast.LENGTH_SHORT).show();
+                    RichiesteActivity.codaRifiutate.add(contatto.getUID());
+                    databaseReference.child(auth.getCurrentUser().getUid()).child("rifiutate").setValue(RichiesteActivity.codaRifiutate);
+                }
             }
         });
     }
