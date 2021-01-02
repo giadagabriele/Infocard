@@ -31,6 +31,7 @@ public class SearchProfileActivity extends AppCompatActivity {
     private LinearLayout linearLayout;
     private boolean trovato;
     private String key;
+    private int index=0;
     static ArrayList<String> codaRichieste=new ArrayList<String>();
 
     @Override
@@ -50,9 +51,13 @@ public class SearchProfileActivity extends AppCompatActivity {
                 for (DataSnapshot d : snapshot.getChildren()) {
                     if (snapshot.child(d.getKey()).child("nickname").getValue().toString().equals(HomeActivity.nickname_clicked)) {
                         key = d.getKey();
-                        Toast.makeText(SearchProfileActivity.this, key, Toast.LENGTH_SHORT).show();
                     }
                 }
+                /*int a=0;
+                while (snapshot.child(auth.getCurrentUser().getUid()).child("richieste").child("" + a).getValue() != null) {
+                    codaRichieste.add(snapshot.child(auth.getCurrentUser().getUid()).child("richieste").child("" + a).getValue().toString());
+                    a++;
+                }*/
                 if (snapshot.child(key).child("nickname").getValue() != null && snapshot.child(key).child("foto").getValue() != null) {
                     nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
                     Glide.with(getBaseContext())
@@ -106,6 +111,7 @@ public class SearchProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(SearchProfileActivity.this, "Richiesta inviata", Toast.LENGTH_SHORT).show();
                 codaRichieste.add(key);
+
                 databaseReference.child(auth.getCurrentUser().getUid()).child("richieste").setValue(codaRichieste);
             }
         });

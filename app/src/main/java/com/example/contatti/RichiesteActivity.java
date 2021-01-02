@@ -28,10 +28,11 @@ import java.util.ArrayList;
 public class RichiesteActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
+    private boolean ok;
     private RichiesteAdapter adapter;
     private RecyclerView recyclerView;
-    static ArrayList<String> codaAccettate=new ArrayList<String>();
-    static ArrayList<String> codaRifiutate=new ArrayList<String>();
+    static ArrayList<String> codaAccettate;
+    static ArrayList<String> codaRifiutate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,13 +41,16 @@ public class RichiesteActivity extends AppCompatActivity {
         auth=FirebaseAuth.getInstance();
         Context context=this;
         String key=auth.getCurrentUser().getUid();
+        ok=true;
         ArrayList<Contatti> contatti= new ArrayList<Contatti>();
+        codaAccettate=new ArrayList<String>();
+        codaRifiutate=new ArrayList<String>();
         databaseReference= FirebaseDatabase.getInstance().getReference();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int p=0;
-                /*while (snapshot.child(key).child("accettate").child("" + p).getValue() != null) {
+                while (snapshot.child(key).child("accettate").child("" + p).getValue() != null) {
                     codaAccettate.add(snapshot.child(key).child("accettate").child("" + p).getValue().toString());
                     p++;
                 }
@@ -54,33 +58,37 @@ public class RichiesteActivity extends AppCompatActivity {
                 while (snapshot.child(key).child("rifiutate").child("" + q).getValue() != null) {
                     codaRifiutate.add(snapshot.child(key).child("rifiutate").child("" + q).getValue().toString());
                     q++;
-                }*/
+                }
                 for(DataSnapshot d:snapshot.getChildren()) {
+                    int i=0;
                     if (!d.getKey().equals(key)) {
-                        int i=0;
                         ArrayList<String> coda = new ArrayList<String>();
                         while (snapshot.child(d.getKey()).child("richieste").child("" + i).getValue() != null) {
                             coda.add(snapshot.child(d.getKey()).child("richieste").child("" + i).getValue().toString());
                             i++;
                         }
-                        for(int j=0;j<coda.size();j++) {
-                            if (snapshot.child(d.getKey()).child("richieste").child("" + j).getValue() != null) {
-                                if (snapshot.child(d.getKey()).child("richieste").child("" + j).getValue().toString().equals(key)) {
-                                    if (snapshot.child(d.getKey()).child("foto").getValue() != null
-                                            && snapshot.child(d.getKey()).child("nickname").getValue() != null) {
-                                        contatti.add(new Contatti(d.getKey(),snapshot.child(d.getKey()).child("foto").getValue().toString(),snapshot.child(d.getKey()).child("nickname").getValue().toString()));
+                        if(coda.size()>0) {
+                            for (int j = 0; j < coda.size(); j++) {
+                                if (snapshot.child(d.getKey()).child("richieste").child("" + j).getValue() != null) {
+                                    if (snapshot.child(d.getKey()).child("richieste").child("" + j).getValue().toString().equals(key)) {
+                                        if (snapshot.child(d.getKey()).child("foto").getValue() != null
+                                                && snapshot.child(d.getKey()).child("nickname").getValue() != null) {
+                                            contatti.add(new Contatti(d.getKey(), snapshot.child(d.getKey()).child("foto").getValue().toString(), snapshot.child(d.getKey()).child("nickname").getValue().toString()));
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-
-                recyclerView = findViewById(R.id.recycler_richieste);
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                recyclerView.setHasFixedSize(true);
-                adapter = new RichiesteAdapter(context, contatti);
-                recyclerView.setAdapter(adapter);
+                if(ok) {
+                    ok = false;
+                    recyclerView = findViewById(R.id.recycler_richieste);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    recyclerView.setHasFixedSize(true);
+                    adapter = new RichiesteAdapter(context, contatti);
+                    recyclerView.setAdapter(adapter);
+                }
             }
 
             @Override

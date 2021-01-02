@@ -28,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -65,8 +64,8 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), Login.class));
             finish();
         } else {
-            ArrayList<Contatti> contatti = new ArrayList<Contatti>();
             String key=auth.getCurrentUser().getUid();
+            ArrayList<Contatti> contatti = new ArrayList<Contatti>();
             final ImageView profilo = findViewById(R.id.profilo);
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -78,20 +77,24 @@ public class HomeActivity extends AppCompatActivity {
                     }
                     ArrayList<String> coda=new ArrayList<String>();
                     for(DataSnapshot d:snapshot.getChildren()) {
-                        int j=0;
+                        /*int j=0;
                         if (!d.getKey().equals(key)) {
-                            while (snapshot.child(d.getKey()).child("accettate").child("" + j).getValue() != null) {
-                                 if(snapshot.child(d.getKey()).child("accettate").child("" + j).getValue().toString().equals(key)){
-                                    coda.add(d.getKey());
-                                    j++;
+                            if(snapshot.child(d.getKey()).child("accettate").child("" + j).getValue()!=null) {
+                                while (snapshot.child(d.getKey()).child("accettate").child("" + j).getValue().toString().equals(key)) {
+                                        if(snapshot.child(d.getKey()).child("accettate").child("" + j).getValue()!=null) {
+                                            coda.add(d.getKey());
+                                        }
+                                        j++;
                                 }
                             }
-                        }
+                        }*/
                     }
-                    for(int i=0;i<coda.size();i++){
-                        if (snapshot.child(coda.get(i)).child("nickname").getValue() != null
-                                && snapshot.child(coda.get(i)).child("foto").getValue()!=null) {
-                            contatti.add(new Contatti(coda.get(i),snapshot.child(coda.get(i)).child("foto").getValue().toString(),snapshot.child(coda.get(i)).child("nickname").getValue().toString()));
+                    if(coda.size()>0) {
+                        for (int i = 0; i < coda.size(); i++) {
+                            if (snapshot.child(coda.get(i)).child("nickname").getValue() != null
+                                    && snapshot.child(coda.get(i)).child("foto").getValue() != null) {
+                                contatti.add(new Contatti(coda.get(i), snapshot.child(coda.get(i)).child("foto").getValue().toString(), snapshot.child(coda.get(i)).child("nickname").getValue().toString()));
+                            }
                         }
                     }
 
@@ -153,6 +156,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 @Override
                 public void onClick(View v) {
+                    SearchProfileActivity.codaRichieste.clear();
                     auth.signOut();
                     startActivity(new Intent(getApplicationContext(), Login.class));
 
