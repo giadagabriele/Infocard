@@ -53,11 +53,6 @@ public class SearchProfileActivity extends AppCompatActivity {
                         key = d.getKey();
                     }
                 }
-                /*int a=0;
-                while (snapshot.child(auth.getCurrentUser().getUid()).child("richieste").child("" + a).getValue() != null) {
-                    codaRichieste.add(snapshot.child(auth.getCurrentUser().getUid()).child("richieste").child("" + a).getValue().toString());
-                    a++;
-                }*/
                 if (snapshot.child(key).child("nickname").getValue() != null && snapshot.child(key).child("foto").getValue() != null) {
                     nicknameEditText.setText(snapshot.child(key).child("nickname").getValue().toString());
                     Glide.with(getBaseContext())

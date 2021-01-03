@@ -77,17 +77,17 @@ public class HomeActivity extends AppCompatActivity {
                     }
                     ArrayList<String> coda=new ArrayList<String>();
                     for(DataSnapshot d:snapshot.getChildren()) {
-                        /*int j=0;
+                        int j=0;
                         if (!d.getKey().equals(key)) {
                             if(snapshot.child(d.getKey()).child("accettate").child("" + j).getValue()!=null) {
-                                while (snapshot.child(d.getKey()).child("accettate").child("" + j).getValue().toString().equals(key)) {
-                                        if(snapshot.child(d.getKey()).child("accettate").child("" + j).getValue()!=null) {
+                                while (snapshot.child(d.getKey()).child("accettate").child("" + j).getValue()!=null) {
+                                        if(snapshot.child(d.getKey()).child("accettate").child("" + j).getValue().toString().equals(key)) {
                                             coda.add(d.getKey());
                                         }
                                         j++;
                                 }
                             }
-                        }*/
+                        }
                     }
                     if(coda.size()>0) {
                         for (int i = 0; i < coda.size(); i++) {
