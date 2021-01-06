@@ -50,7 +50,10 @@ public class EditActivity extends AppCompatActivity {
     private boolean salvato;
     private EditText nickname,nome, cognome,numero,email;
     private ArrayList<EditText> extra;
-    private ArrayList<String> extras=new ArrayList<String>();;
+    private ArrayList<String> extras=new ArrayList<String>();
+    private ArrayList<String> accettate=new ArrayList<String>();
+    private ArrayList<String> rifiutate=new ArrayList<String>();
+    private ArrayList<String> richieste=new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +74,24 @@ public class EditActivity extends AppCompatActivity {
                     Glide.with(getBaseContext())
                             .load(Uri.parse(snapshot.child(key).child("foto").getValue().toString())).apply(RequestOptions.circleCropTransform())
                             .into(image);
+                }
+                accettate.clear();
+                rifiutate.clear();
+                richieste.clear();
+                int h = 0;
+                while (snapshot.child(key).child("accettate").child("" + h).getValue() != null) {
+                    accettate.add(snapshot.child(key).child("accettate").child("" + h).getValue().toString());
+                    h++;
+                }
+                int k = 0;
+                while (snapshot.child(key).child("rifiutate").child("" + k).getValue() != null) {
+                    rifiutate.add(snapshot.child(key).child("rifiutate").child("" + k).getValue().toString());
+                    k++;
+                }
+                int g = 0;
+                while (snapshot.child(key).child("richieste").child("" + g).getValue() != null) {
+                    richieste.add(snapshot.child(key).child("richieste").child("" + g).getValue().toString());
+                    g++;
                 }
                 if(!salvato) {
                     if (snapshot.child(key).child("nickname").getValue() != null) {
@@ -136,10 +157,11 @@ public class EditActivity extends AppCompatActivity {
                 cogn=cognome.getText().toString().trim();
                 num=numero.getText().toString().trim();
                 mail=email.getText().toString().trim();
+                extras.clear();
                 for(int i=0;i<extra.size();i++) {
                     extras.add(extra.get(i).getText().toString().trim());
                 }
-                c = new Contatti(pic, nick, nom, cogn, num, mail, extras);
+                c = new Contatti(pic, nick, nom, cogn, num, mail, extras, accettate, rifiutate, richieste);
                 databaseReference.child(key).setValue(c, new DatabaseReference.CompletionListener() {
 
                     @Override
