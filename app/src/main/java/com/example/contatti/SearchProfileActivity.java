@@ -106,8 +106,8 @@ public class SearchProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(SearchProfileActivity.this, "Richiesta inviata", Toast.LENGTH_SHORT).show();
                 codaRichieste.add(key);
-
                 databaseReference.child(auth.getCurrentUser().getUid()).child("richieste").setValue(codaRichieste);
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
             }
         });
 
