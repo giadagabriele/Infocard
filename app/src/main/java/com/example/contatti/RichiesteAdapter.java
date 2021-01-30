@@ -1,6 +1,7 @@
 package com.example.contatti;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,6 +114,7 @@ public class RichiesteAdapter extends RecyclerView.Adapter<RichiesteAdapter.View
                         }
                     }
                     databaseReference.child(auth.getCurrentUser().getUid()).child("accettate").setValue(RichiesteActivity.codaAccettate);
+                    context.startActivity(new Intent(context.getApplicationContext(), ProfileActivity.class));
                 }
             }
         });
@@ -133,6 +135,7 @@ public class RichiesteAdapter extends RecyclerView.Adapter<RichiesteAdapter.View
                         }
                     }
                     databaseReference.child(auth.getCurrentUser().getUid()).child("rifiutate").setValue(RichiesteActivity.codaRifiutate);
+                    context.startActivity(new Intent(context.getApplicationContext(), ProfileActivity.class));
                 }
             }
         });
