@@ -47,7 +47,9 @@ public class EditActivity extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
     private Contatti c;
     private String nick=null,nom=null,cogn=null,num=null,mail=null,ph=null;
+    private ArrayList<String> nicknames=new ArrayList<String>();
     private boolean salvato;
+    static boolean valido;
     private EditText nickname,nome, cognome,numero,email;
     private ArrayList<EditText> extra;
     private ArrayList<String> extras=new ArrayList<String>();
@@ -59,6 +61,7 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         salvato=false;
+        valido=true;
         auth=FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
         image=findViewById(R.id.edit_image);
@@ -69,6 +72,11 @@ public class EditActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot d:snapshot.getChildren()) {
+                    if (!d.getKey().equals(key)) {
+                        nicknames.add(snapshot.child(d.getKey()).child("nickname").getValue().toString());
+                    }
+                }
                 if(snapshot.child(key).child("foto").getValue()!=null){
                     ph=snapshot.child(key).child("foto").getValue().toString();
                     Glide.with(getBaseContext())
@@ -130,6 +138,17 @@ public class EditActivity extends AppCompatActivity {
                         i++;
                     }
                 }
+                String s=nickname.getText().toString();
+                if(!s.matches("[A-Za-z][A-Za-z0-9]+")){
+                    valido=false;
+                    Toast.makeText(EditActivity.this, "Il nickname può contenere solo numeri e lettere e deve iniziare con una lettera!", Toast.LENGTH_SHORT).show();
+                }
+                for(int i=0;i<nicknames.size();i++){
+                    if(s.equals(nicknames.get(i))){
+                        valido=false;
+                        Toast.makeText(EditActivity.this, "Nickname non valido", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
 
             @Override
@@ -166,12 +185,13 @@ public class EditActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-
+                        if(valido) {
+                            Toast.makeText(EditActivity.this, "MODIFICA SALVATA", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
-                Toast.makeText(EditActivity.this, "MODIFICA SALVATA", Toast.LENGTH_SHORT).show();
+                valido=true;
             }
-
         });
 
         final Button aggiungiEmail=findViewById(R.id.aggiungi_email);

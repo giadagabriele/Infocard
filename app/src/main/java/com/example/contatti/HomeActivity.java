@@ -122,6 +122,13 @@ public class HomeActivity extends AppCompatActivity {
             list=(ListView) findViewById(R.id.lista);
             arrayAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,users);
             list.setAdapter(arrayAdapter);
+            searchView.setOnSearchClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    arrayAdapter.getFilter().filter("#");
+                }
+            });
+
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -130,10 +137,24 @@ public class HomeActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    arrayAdapter.getFilter().filter(newText);
+                    if(newText.length()==0){
+                        arrayAdapter.getFilter().filter("#");
+                    }
+                    else {
+                        arrayAdapter.getFilter().filter(newText);
+                    }
                     return false;
                 }
             });
+
+            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    arrayAdapter.getFilter().filter("#");
+                    return false;
+                }
+            });
+
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
