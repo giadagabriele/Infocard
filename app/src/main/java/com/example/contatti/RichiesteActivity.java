@@ -73,7 +73,8 @@ public class RichiesteActivity extends AppCompatActivity {
                                     if (snapshot.child(d.getKey()).child("richieste").child("" + j).getValue().toString().equals(key)) {
                                         if (snapshot.child(d.getKey()).child("foto").getValue() != null
                                                 && snapshot.child(d.getKey()).child("nickname").getValue() != null) {
-                                            contatti.add(new Contatti(d.getKey(), snapshot.child(d.getKey()).child("foto").getValue().toString(), snapshot.child(d.getKey()).child("nickname").getValue().toString()));
+                                            contatti.add(new Contatti(d.getKey(), snapshot.child(d.getKey()).child("foto").getValue().toString(),
+                                                                                  snapshot.child(d.getKey()).child("nickname").getValue().toString()));
                                         }
                                     }
                                 }

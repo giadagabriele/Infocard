@@ -48,7 +48,7 @@ public class RichiesteAdapter extends RecyclerView.Adapter<RichiesteAdapter.View
     private List<Contatti> contatti;
     private LayoutInflater inflater;
     private Context context;
-    private boolean ok_,okk_;
+    private boolean presenteA,presenteR;
 
     RichiesteAdapter(Context context, List<Contatti> data) {
         this.context = context;
@@ -56,8 +56,8 @@ public class RichiesteAdapter extends RecyclerView.Adapter<RichiesteAdapter.View
         this.contatti = data;
         auth=FirebaseAuth.getInstance();
         databaseReference= FirebaseDatabase.getInstance().getReference();
-        ok_=true;
-        okk_=true;
+        presenteA=true;
+        presenteR=true;
     }
 
 
@@ -75,33 +75,33 @@ public class RichiesteAdapter extends RecyclerView.Adapter<RichiesteAdapter.View
         Glide.with(holder.itemView)
                 .load(Uri.parse(contatto.getFoto())).apply(RequestOptions.circleCropTransform())
                 .into(holder.photo);
-        boolean ok=true;
+        boolean firstA=true;
         for(int i=0;i<RichiesteActivity.codaAccettate.size();i++){
             if(contatto.getUID().equals(RichiesteActivity.codaAccettate.get(i))){
                 holder.accetta.setEnabled(false);
                 holder.rifiuta.setEnabled(false);
-                if(ok) {
+                if(firstA) {
                     holder.vlayout.addView(createTextView("RICHIESTA ARCHIVIATA: ACCETTATA"));
-                    ok=false;
+                    firstA=false;
                 }
             }
         }
-        boolean okk=true;
+        boolean firstR=true;
         for(int i=0;i<RichiesteActivity.codaRifiutate.size();i++){
             if(contatto.getUID().equals(RichiesteActivity.codaRifiutate.get(i))){
                 holder.accetta.setEnabled(false);
                 holder.rifiuta.setEnabled(false);
-                if(okk) {
+                if(firstR) {
                     holder.vlayout.addView(createTextView("RICHIESTA ARCHIVIATA: RIFIUTATA"));
-                    okk=false;
+                    firstR=false;
                 }
             }
         }
         holder.accetta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ok_) {
-                    ok_ = false;
+                if(presenteA) {
+                    presenteA = false;
                     Toast.makeText(context, "RICHIESTA ACCETTATA", Toast.LENGTH_SHORT).show();
                     RichiesteActivity.codaAccettate.add(contatto.getUID());
                     for(int i=0;i<RichiesteActivity.codaAccettate.size();i++){
@@ -121,8 +121,8 @@ public class RichiesteAdapter extends RecyclerView.Adapter<RichiesteAdapter.View
         holder.rifiuta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(okk_) {
-                    okk_=false;
+                if(presenteR) {
+                    presenteR=false;
                     Toast.makeText(context, "RICHIESTA RIFIUTATA", Toast.LENGTH_SHORT).show();
                     RichiesteActivity.codaRifiutate.add(contatto.getUID());
                     for(int i=0;i<RichiesteActivity.codaRifiutate.size();i++){
