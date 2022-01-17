@@ -1,4 +1,4 @@
 # Infocard
 Bachelor degree thesis
 
-Description in poster (written in italian)
+Description in 'Poster' (written in italian)
