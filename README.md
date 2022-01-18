@@ -1,4 +1,4 @@
 # Infocard
-Bachelor degree thesis - Università della Calabria
+Bachelor degree thesis
 
 Description in 'Poster.pdf' (written in italian)
